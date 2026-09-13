@@ -91,7 +91,18 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-navy-950 px-6 py-6"
+          // overscroll-contain is the actual fix for a real, reported bug:
+          // without it, scrolling to the bottom of the menu's own content
+          // (past the last nav item and the CTA button) lets further
+          // scroll input "chain" through to the page underneath — the
+          // sheet itself stays fixed and visually in place, but the page
+          // behind it scrolls, which is how the footer became visible
+          // right below the open menu's own last items. body-scroll-lock
+          // (below) stops the page scrolling on its own, but doesn't stop
+          // scroll input landing on this element from propagating past it
+          // once its own scrollable content is exhausted — that's
+          // specifically what overscroll-behavior exists to contain.
+          className="fixed inset-0 z-[60] flex flex-col overflow-y-auto overscroll-contain bg-navy-950 px-6 py-6"
         >
           <div className="flex items-center justify-between">
             <span className="font-display text-display-sm text-paper-50">Menu</span>
