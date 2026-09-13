@@ -61,7 +61,7 @@ export function WebinarForm({
       setError(result.error);
       return;
     }
-    router.push("/admin/webinars");
+    router.push("/admin/webinars?saved=1");
     router.refresh();
   }
 

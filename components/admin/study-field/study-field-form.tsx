@@ -62,7 +62,7 @@ export function StudyFieldForm({
       setError(result.error);
       return;
     }
-    router.push("/admin/study-fields");
+    router.push("/admin/study-fields?saved=1");
     router.refresh();
   }
 

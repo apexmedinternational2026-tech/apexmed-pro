@@ -74,7 +74,7 @@ export function BlogPostForm({ post, categories, tags, authors }: BlogPostFormPr
       return;
     }
 
-    router.push("/admin/blog");
+    router.push("/admin/blog?saved=1");
     router.refresh();
   }
 

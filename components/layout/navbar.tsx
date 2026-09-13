@@ -40,7 +40,7 @@ export async function Navbar() {
       logo={
         <Link
           href="/"
-          className="group flex flex-none items-center gap-2 whitespace-nowrap font-display text-display-md font-bold text-paper-50 transition-colors"
+          className="group flex flex-none items-center gap-1.5 whitespace-nowrap font-display text-display-sm font-bold text-paper-50 transition-colors sm:gap-2 sm:text-display-md"
         >
           {/* Cropped from the client's own logo artwork (see
               images/Logo.jpeg) — background-removed via a color-distance
@@ -55,10 +55,22 @@ export async function Navbar() {
             width={36}
             height={30}
             priority
-            className="h-8 w-auto flex-none transition-transform duration-200 group-hover:scale-110"
+            className="h-6 w-auto flex-none transition-transform duration-200 group-hover:scale-110 sm:h-8"
           />
-          <span className="transition-colors group-hover:text-gold-300">ApexMed</span>{" "}
-          <span className="text-gold-400 transition-colors group-hover:text-gold-300">International</span>
+          <span className="transition-colors group-hover:text-gold-300">ApexMed</span>
+          {/* "International" hidden below sm: (640px) — at the full bold
+              display-md size, "ApexMed International" plus even just the
+              hamburger trigger measured wider than a 320px viewport in
+              testing (this word alone is the longest single word in the
+              header). Rather than shrink the wordmark until an
+              arbitrarily long brand name always happens to fit — fragile,
+              and the actual failure mode a real audit caught — drop the
+              second word below the width where there's room for it
+              instead. */}
+          <span className="hidden text-gold-400 transition-colors group-hover:text-gold-300 sm:inline">
+            {" "}
+            International
+          </span>
         </Link>
       }
       authLink={authLink}

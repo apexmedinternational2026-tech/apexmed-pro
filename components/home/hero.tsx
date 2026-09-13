@@ -65,7 +65,13 @@ export function Hero() {
       <Container className="relative z-10">
         <div className="flex max-w-xl flex-col items-start gap-6">
           <p className="text-eyebrow uppercase text-gold-400">ApexMed International</p>
-          <h1 className="font-display text-display-2xl text-paper-50">
+          {/* Responsive by breakpoint, not just wrapping: at the full
+              text-display-2xl (60px) size, "International" — the longest
+              single word here — measured wider than a 320px viewport on
+              its own, overflowing the page rather than wrapping (a long
+              word doesn't break mid-word by default). Scales up through
+              three steps as there's actually room for it. */}
+          <h1 className="font-display text-display-lg text-paper-50 sm:text-display-xl md:text-display-2xl">
             Global Medical Excellence, Research &amp; International Pathways
           </h1>
           <p className="text-body-lg text-paper-50/80">

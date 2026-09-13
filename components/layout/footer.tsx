@@ -60,17 +60,20 @@ export async function Footer() {
       <Container className="pt-16">
         <Link
           href="/"
-          className="group flex w-fit items-center gap-2.5 font-display text-display-md font-bold text-paper-50"
+          className="group flex w-fit items-center gap-1.5 font-display text-display-sm font-bold text-paper-50 sm:gap-2.5 sm:text-display-md"
         >
           <Image
             src="/images/logo-icon.png"
             alt=""
             width={36}
             height={30}
-            className="h-8 w-auto transition-transform duration-200 group-hover:scale-110"
+            className="h-6 w-auto transition-transform duration-200 group-hover:scale-110 sm:h-8"
           />
-          <span className="transition-colors group-hover:text-gold-300">ApexMed</span>{" "}
-          <span className="text-gold-400 transition-colors group-hover:text-gold-300">International</span>
+          <span className="transition-colors group-hover:text-gold-300">ApexMed</span>
+          <span className="hidden text-gold-400 transition-colors group-hover:text-gold-300 sm:inline">
+            {" "}
+            International
+          </span>
         </Link>
       </Container>
 
@@ -81,7 +84,15 @@ export async function Footer() {
 
         <div className="col-span-2 flex flex-col gap-4 lg:col-span-1">
           <h3 className="text-body-sm font-semibold uppercase tracking-wide text-gold-400">Contact</h3>
-          <ul className="flex flex-col gap-2 text-body-sm text-paper-50/80">
+          {/* break-words on the list, not just the individual links: an
+              email or a phone number is one unbroken string with no
+              spaces for the browser to wrap at, and at exactly the
+              4-column breakpoint (lg:, 1024px) this column is narrow
+              enough that both routinely overflowed the page rather than
+              wrapping — confirmed as the actual cause of a 26px page
+              overflow present on every single page in an audit, not a
+              hypothetical. */}
+          <ul className="flex flex-col gap-2 break-words text-body-sm text-paper-50/80">
             {email && (
               <li>
                 <a href={`mailto:${email}`} className="transition-colors hover:text-paper-50">

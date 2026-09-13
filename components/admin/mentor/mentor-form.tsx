@@ -33,7 +33,7 @@ export function MentorForm({ mentor }: { mentor?: Tables<"mentors"> }) {
       setError(result.error);
       return;
     }
-    router.push("/admin/mentors");
+    router.push("/admin/mentors?saved=1");
     router.refresh();
   }
 

@@ -36,10 +36,18 @@ for (const path of PAGES) {
       const overflowAmount = result.scrollWidth - result.clientWidth;
       const widest = await page.evaluate(() => {
         const vw = document.documentElement.clientWidth;
+        function hasScrollAncestor(el) {
+          for (let node = el; node; node = node.parentElement) {
+            const style = getComputedStyle(node);
+            if (style.overflowX === "auto" || style.overflowX === "scroll") return true;
+          }
+          return false;
+        }
         let best = null;
         for (const el of document.querySelectorAll("body *")) {
           const rect = el.getBoundingClientRect();
           if (rect.width === 0) continue;
+          if (hasScrollAncestor(el)) continue; // legitimately scrollable, not a real page overflow
           const overshoot = Math.max(0, rect.right - vw);
           if (overshoot > 1 && (!best || overshoot > best.overshoot)) {
             best = {

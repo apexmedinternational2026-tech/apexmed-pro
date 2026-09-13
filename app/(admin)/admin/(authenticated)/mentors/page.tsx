@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { listMentorsAdmin } from "@/lib/supabase/queries/admin/mentors";
 import { MentorsList } from "@/components/admin/mentor/mentors-list";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/components/ui/icons";
 
@@ -17,10 +19,15 @@ export default async function AdminMentorsPage() {
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
+      {/* useSearchParams() inside SavedBanner needs a Suspense boundary. */}
+      <Suspense fallback={null}>
+        <SavedBanner label="Mentor saved — live on the site now." />
+      </Suspense>
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-display-lg text-ink-900">Mentors</h1>
-          <p className="mt-1 text-body-sm text-slate-500">Drag to reorder — this order is what /about renders.</p>
+          <p className="mt-1 text-body-sm text-slate-500">Drag to reorder — this order is what /mentors renders.</p>
         </div>
         <Button asChild variant="primary" size="md">
           <Link href="/admin/mentors/new">
