@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { requireAdminSession } from "@/lib/supabase/auth";
 import { SidebarNav } from "@/components/admin/sidebar-nav";
@@ -15,7 +16,13 @@ export default async function AuthenticatedAdminLayout({ children }: { children:
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)]">
       <aside className="border-b border-navy-800/15 bg-white px-4 py-6 lg:border-b-0 lg:border-r">
-        <p className="px-3 font-display text-display-sm text-ink-900">ApexMed Admin</p>
+        <Link href="/admin" className="flex items-center gap-2 px-3">
+          {/* Same mark as the public navbar/footer (components/layout/navbar.tsx)
+              — the admin side had never carried it at all, just the plain
+              "ApexMed Admin" text. */}
+          <Image src="/images/logo-icon.png" alt="" width={30} height={25} className="h-7 w-auto flex-none" />
+          <span className="font-display text-display-sm text-ink-900">ApexMed Admin</span>
+        </Link>
         <div className="mt-6">
           <SidebarNav />
         </div>

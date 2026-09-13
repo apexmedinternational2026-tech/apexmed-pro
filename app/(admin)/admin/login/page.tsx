@@ -27,7 +27,10 @@ export default function AdminLoginPage() {
       <div aria-hidden="true" className="absolute inset-0 bg-navy-950/70" />
 
       <div className="relative z-10 w-full max-w-sm rounded-2xl border border-navy-800/10 bg-white p-8 shadow-lg">
-        <p className="font-display text-display-sm text-ink-900">ApexMed Admin</p>
+        <div className="flex items-center gap-2">
+          <Image src="/images/logo-icon.png" alt="" width={30} height={25} className="h-7 w-auto flex-none" />
+          <p className="font-display text-display-sm text-ink-900">ApexMed Admin</p>
+        </div>
         <p className="mt-1 text-body-sm text-slate-500">Sign in to manage the site.</p>
         <div className="mt-6">
           {/* useSearchParams() inside LoginForm needs a Suspense boundary. */}

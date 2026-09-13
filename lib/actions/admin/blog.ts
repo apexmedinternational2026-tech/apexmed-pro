@@ -9,6 +9,7 @@ import {
   deletePostAdmin,
   uploadCoverImageAdmin,
 } from "@/lib/supabase/queries/admin/blog";
+import { getBlogCategorySlugs } from "@/lib/supabase/queries/blog";
 import type { Result } from "@/lib/result";
 
 function parsePostForm(formData: FormData) {
@@ -33,13 +34,21 @@ function parsePostForm(formData: FormData) {
   });
 }
 
-function revalidateBlog(slug: string) {
-  // /blog and /blog/[slug] don't exist as pages yet (see project notes),
-  // but revalidatePath on a route that isn't statically generated is a
-  // harmless no-op — this is here so publishing already does the right
-  // thing the moment those pages ship, with nothing to remember to add then.
+async function revalidateBlog(slug: string) {
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+  revalidatePath("/");
+
+  // A post's category can't be inferred from just its own slug, and it
+  // may have changed (moved between categories) or the post may now be
+  // unpublished — rather than track exactly which category page(s) are
+  // actually affected, revalidate all of them. There are only a handful
+  // of blog categories, so this is cheap, and it's correct in every case
+  // a more targeted version would have to special-case anyway.
+  const categories = await getBlogCategorySlugs();
+  for (const category of categories) {
+    revalidatePath(`/blog/category/${category.slug}`);
+  }
 }
 
 export async function createPostAction(formData: FormData): Promise<Result<{ id: string }, string>> {
@@ -50,7 +59,7 @@ export async function createPostAction(formData: FormData): Promise<Result<{ id:
   const result = await createPostAdmin(parsed.data);
   if (!result.ok) return result;
 
-  revalidateBlog(parsed.data.slug);
+  await revalidateBlog(parsed.data.slug);
   return { ok: true, value: { id: result.value.id } };
 }
 
@@ -62,7 +71,7 @@ export async function updatePostAction(id: string, formData: FormData): Promise<
   const result = await updatePostAdmin(id, parsed.data);
   if (!result.ok) return result;
 
-  revalidateBlog(parsed.data.slug);
+  await revalidateBlog(parsed.data.slug);
   return { ok: true, value: true };
 }
 
@@ -70,7 +79,7 @@ export async function deletePostAction(id: string, slug: string): Promise<Result
   await requireAdminSession();
   const result = await deletePostAdmin(id);
   if (!result.ok) return result;
-  revalidateBlog(slug);
+  await revalidateBlog(slug);
   return result;
 }
 

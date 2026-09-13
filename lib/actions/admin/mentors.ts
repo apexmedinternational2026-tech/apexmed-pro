@@ -29,6 +29,15 @@ function parseMentorForm(formData: FormData) {
 }
 
 function revalidateMentors(slug?: string) {
+  // /about used to render the mentor grid directly and doesn't anymore —
+  // that moved to its own /mentors page (see app/(public)/mentors/page.tsx)
+  // when About was split apart, but this function was never updated to
+  // follow, so a mentor edit revalidated a page that no longer shows
+  // mentor data while leaving the page that actually does serving stale
+  // content for up to an hour (its own `revalidate = 3600`). /about still
+  // gets it too since it links to /mentors and could reasonably change
+  // (a founder's bio, etc.) even without rendering the full grid.
+  revalidatePath("/mentors");
   revalidatePath("/about");
   revalidatePath("/");
   if (slug) revalidatePath(`/mentors/${slug}`);

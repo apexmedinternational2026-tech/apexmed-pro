@@ -38,9 +38,14 @@ import type { Result } from "@/lib/result";
 // A program's public page is static/ISR (CLAUDE.md rule 1) — every action
 // below that changes what that page renders busts its cache immediately
 // rather than waiting for the next revalidate window, plus "/" since the
-// homepage's program grid and family split both read published programs.
+// homepage's program grid and family split both read published programs,
+// and "/programs" (the full catalog page) for the same reason — added
+// after that page existed, since a program edit not showing up there
+// until the next hourly revalidate is exactly the kind of "admin change
+// doesn't actually reach the public site" gap worth catching.
 function revalidateProgram(slug: string) {
   revalidatePath(`/programs/${slug}`);
+  revalidatePath("/programs");
   revalidatePath("/");
 }
 
