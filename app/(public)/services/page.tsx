@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { absoluteUrl } from "@/lib/site-url";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 
 export const metadata: Metadata = {
   title: "All ApexMed Services",
@@ -88,9 +86,7 @@ export default function ServicesPage() {
               <h2 className="font-display text-display-sm text-ink-900">Not sure which service is right for you?</h2>
               <p className="mt-1 text-body-sm text-slate-500">A free profile assessment maps the right next step.</p>
             </div>
-            <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
-              <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-            </Button>
+            <ProfileAssessmentButton className="w-full sm:w-auto" />
           </div>
         </Container>
       </Section>

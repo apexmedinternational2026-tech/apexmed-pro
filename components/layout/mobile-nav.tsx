@@ -4,10 +4,9 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { MenuIcon, CloseIcon } from "@/components/ui/icons";
 import type { NavItem } from "@/lib/navigation";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -144,9 +143,7 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
             {isSignedIn ? "My Account" : "Sign In"}
           </Link>
 
-          <Button asChild variant="gold" className="mt-6 w-full justify-center">
-            <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-          </Button>
+          <ProfileAssessmentButton size="md" className="mt-6 w-full justify-center" />
         </div>
       )}
     </>

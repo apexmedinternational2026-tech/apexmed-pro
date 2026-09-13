@@ -54,6 +54,19 @@ export function ProfileAssessmentForm() {
     setValues((previous) => ({ ...previous, [key]: value }));
   }
 
+  // Previously the success state was a dead end — the form was replaced
+  // by a static thank-you block with no way back short of reloading the
+  // page, which meant submitting a second request (a common real need:
+  // wrong email, a colleague asks them to submit for their own profile
+  // too) required leaving and re-navigating back to /contact.
+  function handleReset() {
+    setValues(INITIAL_VALUES);
+    setErrors({});
+    setStatus("idle");
+    setFormError(null);
+    setTurnstileToken(null);
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError(null);
@@ -106,11 +119,23 @@ export function ProfileAssessmentForm() {
 
   if (status === "success") {
     return (
-      <div role="status" className="rounded-2xl border border-navy-800/15 bg-white p-8 text-center">
-        <p className="font-display text-display-md text-ink-900">Thank you.</p>
-        <p className="mt-2 text-body-md text-slate-500">
-          Your profile assessment request has been received. A mentor will contact you within 2 working days.
-        </p>
+      <div role="status" className="flex flex-col items-center gap-4 rounded-2xl border border-navy-800/15 bg-white p-8 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-product-green/10">
+          <CheckIcon className="h-6 w-6 text-product-green" aria-hidden="true" />
+        </span>
+        <div>
+          <p className="font-display text-display-md text-ink-900">Submitted — thank you.</p>
+          <p className="mt-2 text-body-md text-slate-500">
+            Your profile assessment request has been received. A mentor will contact you within 2 working days.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="text-body-sm font-medium text-navy-900 underline decoration-navy-900/30 underline-offset-2 hover:decoration-navy-900"
+        >
+          Submit another request
+        </button>
       </div>
     );
   }
@@ -260,7 +285,19 @@ export function ProfileAssessmentForm() {
         disabled={status === "submitting" || turnstileToken === null}
         className="w-fit"
       >
-        {status === "submitting" ? "Submitting…" : "Book a Free Profile Assessment"}
+        {/* w-fit sizes the button to its text at whatever length that
+            text currently is — on a 320–375px phone, the full phrase on
+            its own (not even competing with sibling elements the way the
+            navbar's version was) measured wider than the viewport, an
+            actual audit-flagged page overflow, not a hypothetical one. */}
+        {status === "submitting" ? (
+          "Submitting…"
+        ) : (
+          <>
+            <span className="sm:hidden">Book Assessment</span>
+            <span className="hidden sm:inline">Book a Free Profile Assessment</span>
+          </>
+        )}
       </Button>
     </form>
   );

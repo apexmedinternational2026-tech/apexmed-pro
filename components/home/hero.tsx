@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 
 const STACK_CARDS = [
   { color: "var(--color-product-master)", rotate: "-9deg", top: "4%", left: "6%" },
@@ -79,9 +79,7 @@ export function Hero() {
             building international careers.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button asChild variant="gold" size="lg">
-              <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-            </Button>
+            <ProfileAssessmentButton />
             <Button
               asChild
               variant="secondary"

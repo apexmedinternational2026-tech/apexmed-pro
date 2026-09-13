@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { getComplianceDisclaimer } from "@/lib/supabase/queries/compliance-disclaimers";
 import { FCPS_PMDC_CONTENT } from "@/lib/research-content";
 import { absoluteUrl } from "@/lib/site-url";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 
 export const revalidate = 3600;
 
@@ -85,9 +83,7 @@ export default async function FcpsPmdcSupportPage() {
               <h2 className="font-display text-display-sm text-ink-900">Ready to start your FCPS research?</h2>
               <p className="mt-1 text-body-sm text-slate-500">A mentor will map this pathway to your specialty and stage.</p>
             </div>
-            <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
-              <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-            </Button>
+            <ProfileAssessmentButton className="w-full sm:w-auto" />
           </div>
 
           <ComplianceNote body={disclaimer} />

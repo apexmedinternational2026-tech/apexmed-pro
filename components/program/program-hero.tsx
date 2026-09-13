@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/layout/breadcrumbs";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 
 export interface ProgramHeroProps {
   name: string;
@@ -41,9 +39,7 @@ export function ProgramHero({ name, headline, summary, durationLabel, breadcrumb
             </p>
           )}
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button asChild variant="gold" size="lg">
-              <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-            </Button>
+            <ProfileAssessmentButton />
           </div>
         </div>
       </Container>
