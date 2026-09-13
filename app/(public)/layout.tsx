@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 
 /**
  * Shell for every public marketing route. Navbar is `fixed`, so it
@@ -22,6 +23,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <Navbar />
       <main id="main-content">{children}</main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }
