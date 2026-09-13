@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { FaqSection } from "@/components/germany/faq-section";
@@ -85,9 +84,7 @@ export function GermanyDetailLayout({ content, disclaimer }: GermanyDetailLayout
               A free profile assessment maps this stage against your current progress.
             </p>
           </div>
-          <Button asChild variant="gold" size="lg">
-            <Link href="/contact">Book a Free Profile Assessment</Link>
-          </Button>
+          <ProfileAssessmentButton />
         </Container>
       </Section>
 

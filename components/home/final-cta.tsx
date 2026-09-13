@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 
 export function FinalCta() {
   return (
@@ -12,9 +10,7 @@ export function FinalCta() {
         <h2 className="max-w-2xl font-display text-display-xl text-paper-50">
           Start with a free profile assessment — no obligation, just a clear next step.
         </h2>
-        <Button asChild variant="gold" size="lg">
-          <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-        </Button>
+        <ProfileAssessmentButton />
       </Container>
     </Section>
   );

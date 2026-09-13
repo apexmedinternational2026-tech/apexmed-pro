@@ -247,9 +247,7 @@ export default async function MastersHubPage() {
             <h2 className="font-display text-display-md text-ink-900">Ready to see your options?</h2>
             <p className="mt-1 text-body-md text-slate-500">Start with a free profile assessment — no obligation.</p>
           </div>
-          <Button asChild variant="gold" size="lg">
-            <Link href={PROFILE_ASSESSMENT_HREF}>Book a Free Profile Assessment</Link>
-          </Button>
+          <ProfileAssessmentButton />
         </Container>
       </Section>
     </>
