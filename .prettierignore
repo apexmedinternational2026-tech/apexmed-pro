@@ -1,0 +1,7 @@
+.next
+node_modules
+coverage
+supabase/.temp
+supabase/seed.sql
+package-lock.json
+CHANGELOG.md

@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   Every value a component needs — color, type, spacing, motion — is
+   declared once here as a Tailwind v4 @theme entry. @theme both emits a
+   `:root` CSS custom property (e.g. --color-product-blue) AND a matching
+   utility class (bg-product-blue, text-product-blue, ...). Components
+   should reach for the utility class; the CSS variable exists so a prop
+   like `accent` can be applied via an inline style without a chain of
+   conditional class strings — see lib/accent.ts.
+   ──────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* ── Core brand colors ── */
+  --color-navy-950: #0a1a3c; /* primary dark background */
+  --color-navy-900: #0f2557; /* raised surfaces on dark */
+  --color-navy-800: #16336f; /* borders and dividers on dark */
+  /* Brand accent moved from gold to orange (amber-500/400/300) at the
+     client's request — chosen specifically because it lands within 0.2
+     of each retired gold value's contrast ratio against navy-950 (7.98
+     vs 8.15, 10.26 vs 10.25, 11.88 vs 12.56 — recomputed via the WCAG
+     relative-luminance formula, not eyeballed), so every existing AA/AAA
+     guarantee this file's original comments documented still holds
+     without auditing every call site. Still named "gold-*" rather than
+     renamed to "orange-*": renaming would mean touching every
+     `text-gold-500` / `bg-gold-400` / etc. class across the codebase for
+     a token swap that doesn't need one, and "gold-500" as an ID has
+     never meant "must render as literal gold" — it's this project's
+     name for "the one warm accent," whatever hue that currently is. */
+  --color-gold-500: #f59e0b; /* primary accent — 8.0:1 on navy-950 */
+  --color-gold-400: #fbbf24; /* hover state — 10.3:1 on navy-950 */
+  --color-gold-300: #fcd34d; /* subtle highlight, decorative only */
+  --color-ink-900: #111827; /* body text on light — 17:1 on paper-50 */
+  --color-slate-500: #64748b; /* secondary text on light — 4.55:1 on paper-50 */
+  --color-paper-50: #f8fafc; /* light section background */
+
+  /* ── Product accents — one per package family ──
+     Contrast audit lives in app/styleguide/page.tsx; the short version:
+     research/gold pair light text on a near-black or navy surface and
+     both clear AA comfortably (8–9:1). blue and green/master are filled
+     backgrounds with light text; product-blue's raw hue fails AA as a
+     *text* color (~4.0:1 on both paper-50 and navy-950), so it gets a
+     dedicated -ink variant for that one use case. Never invent a new
+     shade inline — extend this list instead. */
+  --color-product-research: #f59e0b; /* orange on navy — same value as gold-500 on purpose */
+  --color-product-blue: #1d7dd4; /* Blue Card — backgrounds, borders, icons, large text (≥3:1 contexts) */
+  --color-product-blue-ink: #0f5fa0; /* Blue Card text color — 6.3:1 on paper-50, use for links/running text */
+  --color-product-green: #0b5d3b; /* Green Card — safe as background (white text) or text-on-light (7.6:1) */
+  --color-product-green-highlight: #3dbb4e; /* decorative pop only — fails AA as text or as a text background */
+  --color-product-gold: #e0a80d; /* Gold Card — 9.2:1 on its paired near-black surface */
+  --color-product-gold-bg: #0b0b0b; /* Gold Card's near-black surface */
+  --color-product-master: #6d28d9; /* Master Card — safe as background (white text) or text-on-light (6.8:1) */
+
+  /* ── Semantic (non-brand) ──
+     Form validation needs a red that isn't part of any product family.
+     6.3:1 on paper-50 — kept separate from the accent system on purpose. */
+  --color-error: #b3261e;
+
+  /* ── Fonts ── */
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Type scale ──
+     Deliberately uneven: display steps don't share a single ratio, and
+     each step carries its own tracking/line-height/weight so a section
+     heading never looks like a scaled-up card heading. Body steps hold
+     the brief's 1.65 line-height for running paragraphs.
+     Tailwind v4 pairs a --text-* size with --text-*--line-height /
+     --letter-spacing / --font-weight and bundles them into one utility
+     class (e.g. text-display-2xl). */
+  --text-display-2xl: 3.75rem;
+  --text-display-2xl--line-height: 1.04;
+  --text-display-2xl--letter-spacing: -0.03em;
+  --text-display-2xl--font-weight: 700;
+
+  --text-display-xl: 2.75rem;
+  --text-display-xl--line-height: 1.1;
+  --text-display-xl--letter-spacing: -0.025em;
+  --text-display-xl--font-weight: 700;
+
+  --text-display-lg: 2.125rem;
+  --text-display-lg--line-height: 1.18;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 600;
+
+  --text-display-md: 1.5rem;
+  --text-display-md--line-height: 1.3;
+  --text-display-md--letter-spacing: -0.02em;
+  --text-display-md--font-weight: 600;
+
+  --text-display-sm: 1.125rem;
+  --text-display-sm--line-height: 1.4;
+  --text-display-sm--letter-spacing: -0.01em;
+  --text-display-sm--font-weight: 600;
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-eyebrow--font-weight: 600;
+
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--letter-spacing: 0em;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.65;
+  --text-body-md--letter-spacing: 0em;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.55;
+  --text-body-sm--letter-spacing: 0em;
+  --text-body-sm--font-weight: 400;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.01em;
+  --text-caption--font-weight: 500;
+
+  /* ── Section vertical rhythm ──
+     A deliberate, non-uniform set of paddings for <Section>, so scanning
+     the page doesn't reveal a single repeated padding value. */
+  --spacing-section-sm: 3.5rem;
+  --spacing-section-md: 5.5rem;
+  --spacing-section-lg: 8rem;
+  --spacing-section-xl: 10.5rem;
+
+  /* ── Motion ── */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   BASE
+   ──────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    border-color: var(--color-navy-800);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-paper-50);
+    color: var(--color-ink-900);
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Real focus-visible rings in brand gold — never the browser default,
+     never suppressed. Every interactive primitive inherits this instead
+     of redeclaring its own ring. */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   GOLD-FOIL NOISE TEXTURE
+   A subtly-grained overlay for navy sections — the fractal noise reads as
+   foil/paper grain rather than flat digital color. Opacity and blend mode
+   are tuned so it's felt more than seen. Apply to a `position: relative`
+   ancestor; the film sits in a pseudo-element so it never interferes with
+   real content or blocks pointer events.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.gold-foil-noise {
+  position: relative;
+  isolation: isolate;
+}
+
+.gold-foil-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.83 0 0 0 0 0.68 0 0 0 0 0.22 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   REVEAL ANIMATION
+   The one motion pattern used across the site: content settles up and in
+   as it enters the viewport. components/ui/reveal.tsx applies this class
+   once elements cross the viewport threshold; nothing else on the site
+   should define its own entrance animation.
+   ──────────────────────────────────────────────────────────────────────── */
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-init {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.reveal-visible {
+  animation: reveal 0.6s var(--ease-reveal) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-visible {
+    animation: none;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   HONEYPOT FIELD
+   Visually-hidden-but-present technique (the standard "sr-only" clip
+   trick), deliberately NOT display:none or visibility:hidden — some spam
+   bots skip fields those two rules hide, but still fill in anything
+   physically present in the DOM. Combined with aria-hidden + tabIndex={-1}
+   on the input itself, so real screen-reader/keyboard users never
+   encounter it either.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.hp-field {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
