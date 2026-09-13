@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { listPostsAdmin } from "@/lib/supabase/queries/admin/blog";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableEmpty } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DeletePostButton } from "@/components/admin/blog/delete-post-button";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { PlusIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
@@ -23,6 +25,11 @@ export default async function AdminBlogPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* useSearchParams() inside SavedBanner needs a Suspense boundary. */}
+      <Suspense fallback={null}>
+        <SavedBanner label="Post saved — live on the site now." />
+      </Suspense>
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-display-lg text-ink-900">Blog</h1>

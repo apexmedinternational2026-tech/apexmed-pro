@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ApexMed International
 
 Marketing and lead-generation website for ApexMed International, a medical
@@ -368,3 +369,6 @@ issuance, employment, residency placement, medical licensing
 include a disclaimer. See [`CLAUDE.md`](./CLAUDE.md) for the full rule.
 #   a p e x m e d - I n t e r n a t i o n a l - p r o j e c t  
  
+=======
+# apexmed-pro
+>>>>>>> 57b56d2419b05294bc7c8a8fb30fc79dcb3e4022

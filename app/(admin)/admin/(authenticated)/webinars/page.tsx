@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { listWebinarsAdmin } from "@/lib/supabase/queries/admin/webinars";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableEmpty } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DeleteWebinarButton } from "@/components/admin/webinar/delete-webinar-button";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { PlusIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
@@ -19,6 +21,11 @@ export default async function AdminWebinarsPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* useSearchParams() inside SavedBanner needs a Suspense boundary. */}
+      <Suspense fallback={null}>
+        <SavedBanner label="Webinar saved — live on the site now." />
+      </Suspense>
+
       <div className="flex items-center justify-between">
         <h1 className="font-display text-display-lg text-ink-900">Webinars</h1>
         <Button asChild variant="primary" size="md">

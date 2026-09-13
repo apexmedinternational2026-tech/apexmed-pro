@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { listStudyFieldCategoriesAdmin, listStudyFieldsAdmin } from "@/lib/supabase/queries/admin/study-fields";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableEmpty } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CategoryQuickAdd } from "@/components/admin/study-field/category-quick-add";
 import { DeleteFieldButton } from "@/components/admin/study-field/delete-field-button";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { PlusIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
@@ -20,6 +22,11 @@ export default async function AdminStudyFieldsPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* useSearchParams() inside SavedBanner needs a Suspense boundary. */}
+      <Suspense fallback={null}>
+        <SavedBanner label="Study field saved — live on the site now." />
+      </Suspense>
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-display-lg text-ink-900">Study Fields</h1>

@@ -11,6 +11,7 @@ import { FieldError } from "@/components/ui/field-error";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { TurnstileWidget } from "@/components/ui/turnstile-widget";
+import { CheckIcon } from "@/components/ui/icons";
 
 interface FormValues {
   full_name: string;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
+import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { MastersJourney } from "@/components/masters/journey";
@@ -19,7 +19,6 @@ import {
   STUDENT_WORK_POINTS,
   RESEARCH_ADVANTAGE_POINTS,
 } from "@/lib/masters-content";
-import { PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
 import { absoluteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
