@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { Reveal } from "@/components/ui/reveal";
 import { getMentorBySlug, getMentorSlugs } from "@/lib/supabase/queries/mentors";
 import { NotFoundError } from "@/lib/supabase/errors";
 import { getInitials } from "@/lib/text";
@@ -93,7 +94,7 @@ export default async function MentorPage({ params }: { params: Promise<MentorPag
 
       <Section theme="white" padding="lg" className="-mt-24">
         <Container className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <div>
+          <Reveal>
             {mentor.photo_url ? (
               <Image
                 src={mentor.photo_url}
@@ -107,7 +108,7 @@ export default async function MentorPage({ params }: { params: Promise<MentorPag
                 <span className="font-display text-display-xl text-gold-400">{getInitials(mentor.full_name)}</span>
               </div>
             )}
-          </div>
+          </Reveal>
 
           <div className="pt-4">
             {mentor.is_leadership && <Badge variant="gold">Leadership</Badge>}

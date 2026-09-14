@@ -4,6 +4,7 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { cn } from "@/lib/cn";
 import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { MenuIcon, CloseIcon } from "@/components/ui/icons";
 import type { NavItem } from "@/lib/navigation";
@@ -142,17 +143,31 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
           </div>
 
           <Accordion type="single" collapsible className="mt-6 flex-1">
-            {items.map((item) =>
-              item.items ? (
+            {items.map((item) => {
+              // Active if the current page is this item's own href OR any
+              // of its dropdown children's hrefs — so e.g. being on
+              // /germany/fsp still highlights "Germany", not just a
+              // literal match on /germany itself.
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || (item.items?.some((link) => pathname === link.href) ?? false);
+
+              return item.items ? (
                 <AccordionItem key={item.label} value={item.label} className="border-navy-800/40">
-                  <AccordionTrigger className="text-paper-50">{item.label}</AccordionTrigger>
+                  <AccordionTrigger className={isActive ? "text-gold-400" : "text-paper-50"}>
+                    {item.label}
+                  </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col gap-1 pb-2 pl-2">
                       {item.items.map((link) => (
                         <Link
                           key={link.href}
                           href={link.href}
-                          className="rounded-md px-2 py-2 text-body-md text-paper-50/80"
+                          className={cn(
+                            "rounded-md px-2 py-2 text-body-md",
+                            pathname === link.href ? "text-gold-400" : "text-paper-50/80",
+                          )}
                         >
                           {link.label}
                         </Link>
@@ -164,12 +179,15 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="block border-b border-navy-800/40 py-4 text-body-lg font-medium text-paper-50"
+                  className={cn(
+                    "block border-b border-navy-800/40 py-4 text-body-lg font-medium",
+                    isActive ? "text-gold-400" : "text-paper-50",
+                  )}
                 >
                   {item.label}
                 </Link>
-              ),
-            )}
+              );
+            })}
           </Accordion>
 
           <Link

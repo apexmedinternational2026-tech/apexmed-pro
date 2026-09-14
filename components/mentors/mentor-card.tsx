@@ -20,16 +20,18 @@ export function MentorCard({ mentor, size = "sm" }: MentorCardProps) {
     >
       {mentor.photo_url ? (
         // next.config.mjs derives remotePatterns from NEXT_PUBLIC_SUPABASE_URL
-        // automatically — no per-deployment config needed here, but no
-        // seeded mentor has a photo yet, so this path is untested against
-        // a live image today.
-        <Image
-          src={mentor.photo_url}
-          alt={mentor.full_name}
-          width={isLarge ? 160 : 96}
-          height={isLarge ? 160 : 96}
-          className={cn("rounded-full object-cover", isLarge ? "h-40 w-40" : "h-24 w-24")}
-        />
+        // automatically — no per-deployment config needed here. overflow-hidden
+        // on the wrapper (not the Image itself) clips the hover zoom to the
+        // circle instead of the image spilling past it as a square on hover.
+        <div className={cn("overflow-hidden rounded-full", isLarge ? "h-40 w-40" : "h-24 w-24")}>
+          <Image
+            src={mentor.photo_url}
+            alt={mentor.full_name}
+            width={isLarge ? 160 : 96}
+            height={isLarge ? 160 : 96}
+            className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+          />
+        </div>
       ) : (
         <div
           className={cn(

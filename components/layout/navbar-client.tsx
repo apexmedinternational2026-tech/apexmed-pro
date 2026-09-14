@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import type { NavItem } from "@/lib/navigation";
@@ -23,6 +24,7 @@ export interface NavbarClientProps {
  */
 export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarClientProps) {
   const [scrolled, setScrolled] = React.useState(false);
+  const pathname = usePathname();
 
   React.useEffect(() => {
     function onScroll() {
@@ -52,12 +54,20 @@ export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarCl
         <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
           {items.map((item) =>
             item.items ? (
-              <NavDropdown key={item.label} item={item} />
+              <NavDropdown key={item.label} item={item} pathname={pathname} />
             ) : (
               <Link
                 key={item.label}
                 href={item.href}
-                className="whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium text-paper-50/90 transition-colors hover:text-paper-50"
+                // Home's href is "/" — every path starts with it, so it
+                // needs an exact match rather than the startsWith below.
+                aria-current={item.href === "/" ? (pathname === "/" ? "page" : undefined) : pathname.startsWith(item.href) ? "page" : undefined}
+                className={cn(
+                  "whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium transition-colors",
+                  (item.href === "/" ? pathname === "/" : pathname.startsWith(item.href))
+                    ? "text-gold-400"
+                    : "text-paper-50/90 hover:text-paper-50",
+                )}
               >
                 {item.label}
               </Link>
@@ -75,10 +85,16 @@ export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarCl
   );
 }
 
-function NavDropdown({ item }: { item: NavItem }) {
+function NavDropdown({ item, pathname }: { item: NavItem; pathname: string }) {
   const [open, setOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
+
+  // Active if the current page is any of this dropdown's own links — not
+  // just its own href — so e.g. being on /germany/fsp still highlights
+  // "Germany" even though that specific child link, not the parent href,
+  // is the exact match.
+  const isActive = pathname === item.href || (item.items?.some((link) => pathname === link.href) ?? false);
 
   function close() {
     setOpen(false);
@@ -129,7 +145,11 @@ function NavDropdown({ item }: { item: NavItem }) {
         // breakpoint) and keyboard activation, where onFocus already got
         // there first anyway.
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium text-paper-50/90 transition-colors hover:text-paper-50"
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium transition-colors",
+          isActive ? "text-gold-400" : "text-paper-50/90 hover:text-paper-50",
+        )}
       >
         {item.label}
         <ChevronDownIcon
@@ -164,7 +184,11 @@ function NavDropdown({ item }: { item: NavItem }) {
                 key={link.href}
                 href={link.href}
                 role="menuitem"
-                className="block rounded-md px-3 py-2.5 text-body-sm text-paper-50/85 transition-colors hover:bg-navy-900 hover:text-paper-50"
+                aria-current={pathname === link.href ? "page" : undefined}
+                className={cn(
+                  "block rounded-md px-3 py-2.5 text-body-sm transition-colors hover:bg-navy-900",
+                  pathname === link.href ? "text-gold-400" : "text-paper-50/85 hover:text-paper-50",
+                )}
               >
                 {link.label}
               </Link>
