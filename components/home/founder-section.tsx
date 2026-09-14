@@ -19,9 +19,8 @@ export function FounderSection({ founder }: { founder: Mentor }) {
             <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gold-500/10" aria-hidden="true" />
             {founder.photo_url ? (
               // next.config.mjs derives remotePatterns from
-              // NEXT_PUBLIC_SUPABASE_URL automatically — no seeded mentor
-              // has a photo yet, so this path is untested against a live
-              // image today.
+              // NEXT_PUBLIC_SUPABASE_URL automatically — Supabase Storage
+              // URLs render here with no extra allowlist config needed.
               <Image
                 src={founder.photo_url}
                 alt={founder.full_name}

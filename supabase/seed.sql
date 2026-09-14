@@ -637,7 +637,10 @@ where p.slug = 'master-card';
 -- ── Mentors ───────────────────────────────────────────────────────────────
 
 insert into mentors (slug, full_name, role_title, qualification, institution, bio, publications_count, is_leadership, is_published, sort_order, photo_url) values
-  ('dr-saqib-muhammad', 'Dr. Saqib Muhammad', 'Founder & Chief Mentor', 'MBBS, Kabir Medical College Peshawar', 'Gandhara University', 'Founder and Chief Mentor of ApexMed International, with 30+ PubMed-indexed publications guiding doctors and medical students through research and publication mentorship.', 30, true, true, 1, null),
+  -- Temporary stand-in: Dr. Saqib doesn't have his own photo yet, so the
+  -- Co-Founder's is reused here too, per explicit confirmation — see
+  -- supabase/migrations/20260914100000_founder_photo_shared.sql.
+  ('dr-saqib-muhammad', 'Dr. Saqib Muhammad', 'Founder & Chief Mentor', 'MBBS, Kabir Medical College Peshawar', 'Gandhara University', 'Founder and Chief Mentor of ApexMed International, with 30+ PubMed-indexed publications guiding doctors and medical students through research and publication mentorship.', 30, true, true, 1, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-nadir-akhtar.png'),
   ('dr-nadir-akhtar', 'Dr. Nadir Akhtar', 'Co-Founder & Research Lead', 'BS Zoology, Quaid-i-Azam University Islamabad', 'KIT Baden-Württemberg', 'Co-Founder and Research Lead at ApexMed International, currently an M.Phil student at KIT Baden-Württemberg, with 20+ international publications.', 20, true, true, 2, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-nadir-akhtar.png'),
   ('dr-saajid-ahmed', 'Dr. Saajid Ahmed', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting doctors and students through study design and manuscript development.', 0, false, true, 3, null),
   ('dr-shanza-gul', 'Dr. Shanza Gul', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, focused on literature review and data analysis mentorship.', 0, false, true, 4, null),
