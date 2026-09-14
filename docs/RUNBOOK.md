@@ -65,6 +65,26 @@ Applies to `SUPABASE_SERVICE_ROLE_KEY`, `TURNSTILE_SECRET_KEY`,
    deliberate fail-closed behavior, not a bug. Don't deploy to production
    without completing this step.
 
+## Set up WhatsApp lead alerts (CallMeBot)
+
+`lib/whatsapp.ts` sends a WhatsApp message to one staff number whenever a
+lead is submitted, via [CallMeBot](https://www.callmebot.com/) — an
+unofficial, free, single-recipient relay chosen over the official Meta
+Cloud API / Twilio specifically to avoid Meta's business-verification
+process, which can take days. Revisit that choice if lead volume ever
+needs more than one recipient or hits CallMeBot's rate limits.
+
+1. From the WhatsApp account that should receive alerts, send a message to
+   **+34 644 59 71 47** reading exactly: `I allow callmebot to send me
+   messages`.
+2. CallMeBot replies with an API key. Set `CALLMEBOT_API_KEY` to that value
+   and `CALLMEBOT_PHONE` to that same number — country code + digits only,
+   no `+` and no spaces (e.g. `923001234567`) — in Vercel + `.env.local`.
+3. That's it — no code changes needed. This is best-effort like the email
+   notification in `lib/email.ts`: unconfigured or failing silently skips
+   the WhatsApp alert (logged as a warning) without ever blocking or
+   failing the lead submission itself.
+
 ## Set up Sentry
 
 1. [sentry.io](https://sentry.io/) > create a project (platform:

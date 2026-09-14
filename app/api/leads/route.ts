@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { leadSchema } from "@/lib/validation/lead";
 import { createLead, type LeadSourceMeta } from "@/lib/supabase/queries/leads";
 import { sendLeadNotificationEmail } from "@/lib/email";
+import { sendLeadWhatsAppNotification } from "@/lib/whatsapp";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { getVisitorSession } from "@/lib/supabase/auth";
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
   }
 
   // Best-effort — never blocks or fails the response to the visitor; the
-  // lead is already safely written by the time this runs.
+  // lead is already safely written by the time these run.
   void sendLeadNotificationEmail({
     fullName: result.value.full_name,
     email: result.value.email,
@@ -104,6 +105,13 @@ export async function POST(request: Request) {
     country: result.value.country,
     interestType: result.value.interest_type,
     message: result.value.message,
+  });
+  void sendLeadWhatsAppNotification({
+    fullName: result.value.full_name,
+    email: result.value.email,
+    phone: result.value.phone,
+    country: result.value.country,
+    interestType: result.value.interest_type,
   });
 
   return NextResponse.json({ ok: true }, { status: 201 });
