@@ -26,13 +26,38 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
     }
   }, [pathname]);
 
-  // Body scroll lock while the sheet is open.
+  // Body scroll lock while the sheet is open. overflow:hidden alone is
+  // not enough — iOS Safari still lets the document elastic-scroll
+  // ("rubber-band") a few pixels past its own bounds even while that's
+  // set, which is what briefly revealed page content behind the sheet
+  // (the hero image, right at its top edge) for an instant on scroll,
+  // then snapped back. Pinning the body with position:fixed removes it
+  // from the scroll flow at the OS level instead of relying on a CSS
+  // property iOS only treats as advisory; scroll position is restored
+  // on close so closing the menu doesn't jump the page.
   React.useEffect(() => {
     if (!open) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const scrollY = window.scrollY;
+    const body = document.body.style;
+    const original = {
+      position: body.position,
+      top: body.top,
+      left: body.left,
+      right: body.right,
+      overflow: body.overflow,
+    };
+    body.position = "fixed";
+    body.top = `-${scrollY}px`;
+    body.left = "0";
+    body.right = "0";
+    body.overflow = "hidden";
     return () => {
-      document.body.style.overflow = original;
+      body.position = original.position;
+      body.top = original.top;
+      body.left = original.left;
+      body.right = original.right;
+      body.overflow = original.overflow;
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 

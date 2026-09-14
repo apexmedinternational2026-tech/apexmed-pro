@@ -76,16 +76,7 @@ export async function Navbar() {
       authLink={authLink}
       cta={
         <Button asChild variant="gold" size="sm" className="flex-none">
-          {/* Shorter label from xl: (where this button first appears)
-              up to 2xl: — the full phrase is the longest single piece of
-              content in the whole header and was the main thing forcing
-              the row to overflow even after widening it; swapping in the
-              full text only once there's real room (2xl:, 1536px+) keeps
-              the nav from needing this width just to avoid wrapping. */}
-          <Link href={PROFILE_ASSESSMENT_HREF}>
-            <span className="2xl:hidden">Book Assessment</span>
-            <span className="hidden 2xl:inline">Book a Free Profile Assessment</span>
-          </Link>
+          <Link href={PROFILE_ASSESSMENT_HREF}>Contact Us</Link>
         </Button>
       }
       mobileNav={<MobileNav items={PRIMARY_NAV} isSignedIn={Boolean(session)} />}

@@ -285,19 +285,11 @@ export function ProfileAssessmentForm() {
         disabled={status === "submitting" || turnstileToken === null}
         className="w-fit"
       >
-        {/* w-fit sizes the button to its text at whatever length that
-            text currently is — on a 320–375px phone, the full phrase on
-            its own (not even competing with sibling elements the way the
-            navbar's version was) measured wider than the viewport, an
-            actual audit-flagged page overflow, not a hypothetical one. */}
-        {status === "submitting" ? (
-          "Submitting…"
-        ) : (
-          <>
-            <span className="sm:hidden">Book Assessment</span>
-            <span className="hidden sm:inline">Book a Free Profile Assessment</span>
-          </>
-        )}
+        {/* This is the form's own submit action, not a navigational CTA
+            (it doesn't link anywhere — it posts the form) — "Send Message"
+            names what the click actually does, on a page already titled
+            "Contact Us". */}
+        {status === "submitting" ? "Submitting…" : "Send Message"}
       </Button>
     </form>
   );

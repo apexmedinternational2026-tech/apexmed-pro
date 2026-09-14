@@ -9,7 +9,7 @@ import { absoluteUrl } from "@/lib/site-url";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Book a Free Profile Assessment — ApexMed International",
+  title: "Contact Us — ApexMed International",
   description:
     "Tell us about your background and goals — we'll map the right research, German pathway, or Master's admissions Card for you.",
   alternates: { canonical: absoluteUrl("/contact") },
@@ -27,7 +27,7 @@ export default function ContactPage() {
         <Container className="flex flex-col gap-4">
           <Breadcrumbs items={BREADCRUMB_ITEMS} tone="dark" />
           <p className="text-eyebrow uppercase text-gold-400">Get Started</p>
-          <h1 className="max-w-2xl font-display text-display-xl text-paper-50">Book a Free Profile Assessment</h1>
+          <h1 className="max-w-2xl font-display text-display-xl text-paper-50">Contact Us</h1>
           <p className="max-w-xl text-body-lg text-paper-50/80">
             Tell us where you are in your journey and what you want to achieve. A mentor will review your profile
             and recommend the right pathway.

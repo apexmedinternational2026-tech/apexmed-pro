@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/container";
 
 const STEPS = [
   {
-    title: "Book a Free Profile Assessment",
+    title: "Contact Us",
     description: "Share your background and goals with a mentor.",
   },
   {

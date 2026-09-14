@@ -135,7 +135,7 @@ export async function Footer() {
             href={PROFILE_ASSESSMENT_HREF}
             className="mt-1 inline-flex w-fit items-center rounded-md bg-gold-500 px-4 py-2 text-body-sm font-medium text-navy-950 transition-colors hover:bg-gold-400"
           >
-            Book a Free Profile Assessment
+            Contact Us
           </Link>
         </div>
       </Container>

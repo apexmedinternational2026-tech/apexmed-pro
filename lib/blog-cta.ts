@@ -10,7 +10,7 @@ const DEFAULT_CTA: BlogCtaConfig = {
   title: "Not sure which pathway fits your goals?",
   description:
     "A free profile assessment maps your background to the right research, German pathway, or admissions Card.",
-  label: "Book a Free Profile Assessment",
+  label: "Contact Us",
 };
 
 // Checked before the category-level mapping, so a specific tag (e.g. a
