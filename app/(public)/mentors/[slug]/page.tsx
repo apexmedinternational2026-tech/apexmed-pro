@@ -10,6 +10,7 @@ import { getMentorBySlug, getMentorSlugs } from "@/lib/supabase/queries/mentors"
 import { NotFoundError } from "@/lib/supabase/errors";
 import { getInitials } from "@/lib/text";
 import { absoluteUrl } from "@/lib/site-url";
+import { isSupabaseStorageUrl } from "@/lib/supabase-storage-url";
 
 export const revalidate = 3600;
 
@@ -95,7 +96,7 @@ export default async function MentorPage({ params }: { params: Promise<MentorPag
       <Section theme="white" padding="lg" className="-mt-24">
         <Container className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[280px_minmax(0,1fr)]">
           <Reveal>
-            {mentor.photo_url ? (
+            {isSupabaseStorageUrl(mentor.photo_url) ? (
               <Image
                 src={mentor.photo_url}
                 alt={mentor.full_name}

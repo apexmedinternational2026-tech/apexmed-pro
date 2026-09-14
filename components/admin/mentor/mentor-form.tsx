@@ -73,6 +73,15 @@ export function MentorForm({ mentor }: { mentor?: Tables<"mentors"> }) {
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="photo_url">Photo URL</Label>
           <Input id="photo_url" name="photo_url" defaultValue={mentor?.photo_url ?? ""} />
+          {/* Any host other than this project's own Supabase Storage
+              crashes the public page at render time (next.config.mjs only
+              allowlists that one host for next/image) — pasting a page
+              link instead of an uploaded file's URL is a real, easy
+              mistake to make here, not a hypothetical one. */}
+          <p className="text-caption text-slate-500">
+            Must be a file uploaded to Supabase Storage (Storage → media → mentor-photos), not a link to any other
+            website.
+          </p>
         </div>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="linkedin_url">LinkedIn URL</Label>

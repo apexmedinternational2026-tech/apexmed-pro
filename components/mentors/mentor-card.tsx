@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { getInitials } from "@/lib/text";
+import { isSupabaseStorageUrl } from "@/lib/supabase-storage-url";
 import type { Mentor } from "@/lib/supabase/queries/mentors";
 
 export interface MentorCardProps {
@@ -18,7 +19,7 @@ export function MentorCard({ mentor, size = "sm" }: MentorCardProps) {
       href={`/mentors/${mentor.slug}`}
       className="group flex flex-col items-start gap-4 rounded-2xl border border-navy-800/10 bg-white p-6 transition-colors hover:border-gold-500/40"
     >
-      {mentor.photo_url ? (
+      {isSupabaseStorageUrl(mentor.photo_url) ? (
         // next.config.mjs derives remotePatterns from NEXT_PUBLIC_SUPABASE_URL
         // automatically — no per-deployment config needed here. overflow-hidden
         // on the wrapper (not the Image itself) clips the hover zoom to the

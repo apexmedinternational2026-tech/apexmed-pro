@@ -640,12 +640,17 @@ insert into mentors (slug, full_name, role_title, qualification, institution, bi
   ('dr-saqib-muhammad', 'Dr. Saqib Muhammad', 'Founder & Chief Mentor', 'MBBS, Kabir Medical College Peshawar', 'Gandhara University', 'Founder and Chief Mentor of ApexMed International, with 30+ PubMed-indexed publications guiding doctors and medical students through research and publication mentorship.', 30, true, true, 1, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-saqib-muhammad.jpg'),
   ('dr-nadir-akhtar', 'Dr. Nadir Akhtar', 'Co-Founder & Research Lead', 'BS Zoology, Quaid-i-Azam University Islamabad', 'KIT Baden-Württemberg', 'Co-Founder and Research Lead at ApexMed International, currently an M.Phil student at KIT Baden-Württemberg, with 20+ international publications.', 20, true, true, 2, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-nadir-akhtar.png'),
   ('dr-saajid-ahmed', 'Dr. Saajid Ahmed', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting doctors and students through study design and manuscript development.', 0, false, true, 3, null),
-  ('dr-shanza-gul', 'Dr. Shanza Gul', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, focused on literature review and data analysis mentorship.', 0, false, true, 4, null),
-  ('dr-faiza-kiran', 'Dr. Faiza Kiran', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting manuscript writing and submission guidance.', 0, false, true, 5, null),
-  ('dr-haris-khan', 'Dr. Haris Khan', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, specializing in systematic review and meta-analysis support.', 0, false, true, 6, null),
-  ('dr-muratza', 'Dr. Muratza', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through the full research training track.', 0, false, true, 7, null),
-  ('dr-alia', 'Dr. Alia', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through research training and publication guidance.', 0, false, true, 8, null),
-  ('dr-waheed-alam', 'Dr. Waheed Alam', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through data analysis and manuscript preparation.', 0, false, true, 9, null);
+  -- photo_url on these 6: demo/placeholder portraits (randomuser.me — free,
+  -- no-copyright placeholder photos, not real photos of these real-named
+  -- mentors), added per explicit confirmation after flagging that trade-off.
+  -- Replace with each mentor's real photo as it becomes available; see
+  -- supabase/migrations/20260916100000_mentor_demo_photos.sql.
+  ('dr-shanza-gul', 'Dr. Shanza Gul', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, focused on literature review and data analysis mentorship.', 0, false, true, 4, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-shanza-gul.jpg'),
+  ('dr-faiza-kiran', 'Dr. Faiza Kiran', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting manuscript writing and submission guidance.', 0, false, true, 5, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-faiza-kiran.jpg'),
+  ('dr-haris-khan', 'Dr. Haris Khan', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, specializing in systematic review and meta-analysis support.', 0, false, true, 6, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-haris-khan.jpg'),
+  ('dr-muratza', 'Dr. Muratza', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through the full research training track.', 0, false, true, 7, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-muratza.jpg'),
+  ('dr-alia', 'Dr. Alia', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through research training and publication guidance.', 0, false, true, 8, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-alia.jpg'),
+  ('dr-waheed-alam', 'Dr. Waheed Alam', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through data analysis and manuscript preparation.', 0, false, true, 9, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-waheed-alam.jpg');
 
 -- ── Site settings ─────────────────────────────────────────────────────────
 

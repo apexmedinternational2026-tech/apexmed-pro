@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getInitials } from "@/lib/text";
+import { isSupabaseStorageUrl } from "@/lib/supabase-storage-url";
 
 export interface AuthorCardData {
   slug: string;
@@ -15,7 +16,7 @@ export function AuthorCard({ author }: { author: AuthorCardData }) {
       href={`/mentors/${author.slug}`}
       className="flex items-center gap-4 rounded-2xl border border-navy-800/10 bg-white p-5 transition-colors hover:border-gold-500/40"
     >
-      {author.photo_url ? (
+      {isSupabaseStorageUrl(author.photo_url) ? (
         <Image
           src={author.photo_url}
           alt={author.full_name}

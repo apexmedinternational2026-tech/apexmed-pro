@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import { getInitials } from "@/lib/text";
+import { isSupabaseStorageUrl } from "@/lib/supabase-storage-url";
 import type { Mentor } from "@/lib/supabase/queries/mentors";
 
 /**
@@ -18,7 +19,7 @@ export function FounderSection({ founder }: { founder: Mentor }) {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-16">
           <Reveal className="relative mx-auto w-full max-w-sm lg:mx-0">
             <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gold-500/10" aria-hidden="true" />
-            {founder.photo_url ? (
+            {isSupabaseStorageUrl(founder.photo_url) ? (
               // next.config.mjs derives remotePatterns from
               // NEXT_PUBLIC_SUPABASE_URL automatically — Supabase Storage
               // URLs render here with no extra allowlist config needed.
