@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { getComplianceDisclaimer } from "@/lib/supabase/queries/compliance-disclaimers";
 import { RESEARCH_COURSES } from "@/lib/research-content";
@@ -74,7 +74,7 @@ export default async function ResearchProgramsPage() {
                 with mentorship, a real project, and publication guidance.
               </p>
             </div>
-            <ProfileAssessmentButton className="w-full sm:w-auto" />
+            <WhatsAppContactButton className="w-full sm:w-auto" />
           </div>
 
           <ComplianceNote body={disclaimer} />

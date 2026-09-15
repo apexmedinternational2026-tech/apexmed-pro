@@ -120,20 +120,17 @@ export function ChatWidget({ starterQuestions }: { starterQuestions: StarterFaq[
           aria-label="ApexMed chat assistant"
           onKeyDown={handleKeyDown}
           className={cn(
-            "fixed bottom-56 right-4 z-40 flex h-[70vh] max-h-[520px] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-navy-800/10 bg-white shadow-xl shadow-black/20",
-            "sm:bottom-40 sm:right-5",
+            "fixed bottom-[288px] right-4 z-40 flex h-[65vh] max-h-[440px] w-[calc(100vw-2rem)] max-w-[340px] flex-col overflow-hidden rounded-2xl border border-navy-800/10 bg-white shadow-xl shadow-black/20",
+            "sm:bottom-[248px] sm:right-5",
           )}
         >
-          <div className="flex items-center justify-between bg-navy-950 px-4 py-3">
-            <div>
-              <p className="text-body-sm font-semibold text-paper-50">ApexMed Assistant</p>
-              <p className="text-caption text-paper-50/60">Answers common questions — not a live agent</p>
-            </div>
+          <div className="flex items-center justify-between bg-navy-950 px-4 py-2.5">
+            <p className="text-body-sm font-semibold text-paper-50">ApexMed Assistant</p>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="flex h-8 w-8 flex-none items-center justify-center rounded-full text-paper-50/80 hover:bg-white/10 hover:text-paper-50"
+              className="flex h-7 w-7 flex-none items-center justify-center rounded-full text-paper-50/80 hover:bg-white/10 hover:text-paper-50"
             >
               <CloseIcon className="h-4 w-4" />
             </button>
@@ -206,11 +203,12 @@ export function ChatWidget({ starterQuestions }: { starterQuestions: StarterFaq[
         onClick={() => setOpen((previous) => !previous)}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
-        // Stacked directly above the WhatsApp button (components/layout/whatsapp-button.tsx),
+        // Stacked directly above the LinkedIn and WhatsApp buttons
+        // (components/layout/linkedin-button.tsx, whatsapp-button.tsx),
         // same z-index and the same mobile-vs-sm: size/position split, so
-        // the two read as one consistent corner stack rather than
+        // all three read as one consistent corner stack rather than
         // fighting for the same spot.
-        className="fixed bottom-40 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:bottom-24 sm:right-5 sm:h-14 sm:w-14"
+        className="fixed bottom-[224px] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:bottom-[172px] sm:right-5 sm:h-14 sm:w-14"
       >
         {open ? <CloseIcon className="h-5 w-5 sm:h-6 sm:w-6" /> : <MessageCircleIcon className="h-6 w-6 sm:h-7 sm:w-7" />}
       </button>

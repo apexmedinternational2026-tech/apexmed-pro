@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { getComplianceDisclaimer } from "@/lib/supabase/queries/compliance-disclaimers";
 import { FCPS_PMDC_CONTENT } from "@/lib/research-content";
@@ -83,7 +83,7 @@ export default async function FcpsPmdcSupportPage() {
               <h2 className="font-display text-display-sm text-ink-900">Ready to start your FCPS research?</h2>
               <p className="mt-1 text-body-sm text-slate-500">A mentor will map this pathway to your specialty and stage.</p>
             </div>
-            <ProfileAssessmentButton className="w-full sm:w-auto" />
+            <WhatsAppContactButton className="w-full sm:w-auto" />
           </div>
 
           <ComplianceNote body={disclaimer} />

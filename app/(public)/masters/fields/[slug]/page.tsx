@@ -7,7 +7,7 @@ import { NotFoundError } from "@/lib/supabase/errors";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { absoluteUrl } from "@/lib/site-url";
@@ -106,7 +106,7 @@ export default async function StudyFieldPage({ params }: { params: Promise<Field
               <p className="mt-2 text-body-sm text-slate-500">
                 A free profile assessment maps your background to a realistic shortlist of programs and universities.
               </p>
-              <ProfileAssessmentButton size="md" className="mt-4 w-full" />
+              <WhatsAppContactButton size="md" className="mt-4 w-full" />
               <Button asChild variant="secondary" size="md" className="mt-2 w-full">
                 <Link href="/programs/master-card">Explore the Master Card</Link>
               </Button>

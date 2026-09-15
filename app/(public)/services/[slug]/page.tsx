@@ -13,7 +13,7 @@ import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { CourseJsonLd } from "@/components/program/course-jsonld";
 import { ModuleList } from "@/components/program/module-list";
@@ -180,7 +180,7 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
               <Button asChild variant="gold" size="lg">
                 <a href="#apply">Apply Now</a>
               </Button>
-              <ProfileAssessmentButton />
+              <WhatsAppContactButton />
             </div>
           )}
         </Container>

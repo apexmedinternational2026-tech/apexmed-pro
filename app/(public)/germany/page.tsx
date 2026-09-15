@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { GermanyPathway } from "@/components/germany/pathway";
 import { ComplianceNote } from "@/components/program/compliance-note";
@@ -117,7 +117,7 @@ export default async function GermanyHubPage() {
               A free profile assessment maps your current German level to the right stage of this pathway.
             </p>
           </div>
-          <ProfileAssessmentButton />
+          <WhatsAppContactButton />
         </Container>
       </Section>
 

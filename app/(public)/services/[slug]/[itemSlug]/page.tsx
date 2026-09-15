@@ -12,7 +12,7 @@ import { AudienceGrid } from "@/components/program/audience-grid";
 import { JourneyPath } from "@/components/program/journey-path";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { CourseJsonLd } from "@/components/program/course-jsonld";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { accentStyle, resolveAccentToken } from "@/lib/accent";
 import { absoluteUrl } from "@/lib/site-url";
 
@@ -153,7 +153,7 @@ export default async function ServiceItemPage({ params }: { params: Promise<Item
               </p>
             )}
             <div className="mt-7 flex flex-wrap gap-3">
-              <ProfileAssessmentButton />
+              <WhatsAppContactButton />
             </div>
           </div>
         </Container>

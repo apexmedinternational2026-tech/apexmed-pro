@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { MastersJourney } from "@/components/masters/journey";
@@ -247,7 +247,7 @@ export default async function MastersHubPage() {
             <h2 className="font-display text-display-md text-ink-900">Ready to see your options?</h2>
             <p className="mt-1 text-body-md text-slate-500">Start with a free profile assessment — no obligation.</p>
           </div>
-          <ProfileAssessmentButton />
+          <WhatsAppContactButton />
         </Container>
       </Section>
     </>

@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { FaqSection } from "@/components/germany/faq-section";
@@ -84,7 +84,7 @@ export function GermanyDetailLayout({ content, disclaimer }: GermanyDetailLayout
               A free profile assessment maps this stage against your current progress.
             </p>
           </div>
-          <ProfileAssessmentButton />
+          <WhatsAppContactButton />
         </Container>
       </Section>
 

@@ -64,7 +64,14 @@ export async function getProgramFamilies(): Promise<ProgramFamily[]> {
 // by default rather than requiring every caller to remember to filter it
 // out; a caller that genuinely wants every published program regardless of
 // family can pass an empty array.
-const DEFAULT_EXCLUDED_FAMILY_SLUGS = ["international-licensing"];
+//
+// service-programs is the same pattern for a different reason: those
+// programs (e.g. FCPS Trainee Research & Publication Support — see
+// supabase/migrations/20260925100000_fcps_research_publication_program.sql)
+// exist purely to power a Research/Services service_item's own detail page
+// (full module/audience/journey rendering, reused rather than duplicated)
+// and were never meant to appear as an 8th+ Membership Card here.
+const DEFAULT_EXCLUDED_FAMILY_SLUGS = ["international-licensing", "service-programs"];
 
 export async function getPublishedPrograms(
   excludeFamilySlugs: string[] = DEFAULT_EXCLUDED_FAMILY_SLUGS,

@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/container";
-import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
+import { WhatsAppContactButton } from "@/components/ui/whatsapp-contact-button";
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/layout/breadcrumbs";
 
 export interface ProgramHeroProps {
@@ -39,7 +39,7 @@ export function ProgramHero({ name, headline, summary, durationLabel, breadcrumb
             </p>
           )}
           <div className="mt-7 flex flex-wrap gap-3">
-            <ProfileAssessmentButton />
+            <WhatsAppContactButton />
           </div>
         </div>
       </Container>
