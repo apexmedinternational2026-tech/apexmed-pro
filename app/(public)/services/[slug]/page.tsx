@@ -23,7 +23,9 @@ import { CourseCurriculum } from "@/components/services/course-curriculum";
 import { InitiativeSections } from "@/components/services/initiative-sections";
 import { EmergencyBlock } from "@/components/services/emergency-block";
 import { SupportOfferings } from "@/components/services/support-offerings";
+import { ApplicationForm } from "@/components/services/application-form";
 import { MentorCard } from "@/components/mentors/mentor-card";
+import { Button } from "@/components/ui/button";
 import { accentStyle, resolveAccentToken } from "@/lib/accent";
 import { absoluteUrl } from "@/lib/site-url";
 import type { Json } from "@/lib/supabase/database.types";
@@ -175,6 +177,9 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
           )}
           {!NO_LEAD_FORM_SLUGS.includes(slug) && (
             <div className="mt-1 flex flex-wrap gap-3">
+              <Button asChild variant="gold" size="lg">
+                <a href="#apply">Apply Now</a>
+              </Button>
               <ProfileAssessmentButton />
             </div>
           )}
@@ -376,6 +381,23 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
                 </Link>
               );
             })}
+          </Container>
+        </Section>
+      )}
+
+      {!NO_LEAD_FORM_SLUGS.includes(slug) && (
+        <Section theme="white" padding="lg" className="scroll-mt-24" id="apply">
+          <Container className="max-w-2xl">
+            <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+              Apply Now
+            </p>
+            <h2 className="mt-2 font-display text-display-lg text-ink-900">Start your application</h2>
+            <p className="mt-4 text-body-md text-slate-500">
+              Tell us a bit about yourself and our team will review your application and follow up.
+            </p>
+            <div className="mt-8">
+              <ApplicationForm serviceId={service.id} serviceSlug={service.slug} serviceName={service.name} />
+            </div>
           </Container>
         </Section>
       )}

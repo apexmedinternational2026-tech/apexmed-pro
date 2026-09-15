@@ -1503,6 +1503,68 @@ export type Database = {
           },
         ];
       };
+      applications: {
+        Row: {
+          id: string;
+          service_id: string;
+          full_name: string;
+          email: string;
+          phone: string;
+          institution: string | null;
+          education_level: string | null;
+          year_of_study: string | null;
+          country: string | null;
+          cv_url: string | null;
+          motivation: string | null;
+          extra_fields: Json;
+          status: string;
+          admin_notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          service_id: string;
+          full_name: string;
+          email: string;
+          phone: string;
+          institution?: string | null;
+          education_level?: string | null;
+          year_of_study?: string | null;
+          country?: string | null;
+          cv_url?: string | null;
+          motivation?: string | null;
+          extra_fields?: Json;
+          status?: string;
+          admin_notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          service_id?: string;
+          full_name?: string;
+          email?: string;
+          phone?: string;
+          institution?: string | null;
+          education_level?: string | null;
+          year_of_study?: string | null;
+          country?: string | null;
+          cv_url?: string | null;
+          motivation?: string | null;
+          extra_fields?: Json;
+          status?: string;
+          admin_notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "applications_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     // `{ [_ in never]: never }` (an empty object type), not
     // `Record<string, never>` (an index signature) — postgrest-js
