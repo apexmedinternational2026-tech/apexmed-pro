@@ -5,6 +5,7 @@ import { getServiceBySlug, getServiceSlugs, getPublishedServices } from "@/lib/s
 import { getCourseBySlug } from "@/lib/supabase/queries/courses";
 import { getInitiativeBySlug } from "@/lib/supabase/queries/initiatives";
 import { getSupportServiceBySlug, getActiveCrisisResources } from "@/lib/supabase/queries/support-services";
+import { getProgramBySlug } from "@/lib/supabase/queries/programs";
 import { getSiteSettings } from "@/lib/supabase/queries/site-settings";
 import { getMentorBySlug } from "@/lib/supabase/queries/mentors";
 import { NotFoundError } from "@/lib/supabase/errors";
@@ -15,6 +16,9 @@ import { ServiceIcon } from "@/components/ui/service-icon";
 import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
 import { CourseJsonLd } from "@/components/program/course-jsonld";
+import { ModuleList } from "@/components/program/module-list";
+import { AudienceGrid } from "@/components/program/audience-grid";
+import { JourneyPath } from "@/components/program/journey-path";
 import { CourseCurriculum } from "@/components/services/course-curriculum";
 import { InitiativeSections } from "@/components/services/initiative-sections";
 import { EmergencyBlock } from "@/components/services/emergency-block";
@@ -101,6 +105,14 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
   const initiative = service.items.length === 0 && !course ? await getInitiativeBySlug(slug).catch(() => null) : null;
   const supportService =
     service.items.length === 0 && !course && !initiative ? await getSupportServiceBySlug(slug).catch(() => null) : null;
+  // USMLE/PLAB/MRCP/AMC: a program of the exact same slug already carries
+  // full module/audience/journey content (built for the earlier
+  // /international-exams route) — surfaced here too rather than
+  // duplicated, same convention as course/initiative/supportService above.
+  const linkedProgram =
+    service.items.length === 0 && !course && !initiative && !supportService
+      ? await getProgramBySlug(slug).catch(() => null)
+      : null;
 
   // Mental Health only: the emergency block, WhatsApp/email contact
   // details, and the two real, already-published psychiatrist mentors —
@@ -130,6 +142,9 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
   return (
     <div style={accentStyle(accent)}>
       {course && <CourseJsonLd name={course.title} description={course.tagline ?? course.description ?? ""} slug={course.slug} path={canonicalPath} />}
+      {linkedProgram && (
+        <CourseJsonLd name={linkedProgram.name} description={linkedProgram.summary} slug={linkedProgram.slug} path={canonicalPath} />
+      )}
 
       <section
         className="gold-foil-noise relative overflow-hidden pb-16 pt-32"
@@ -203,6 +218,55 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
             <InitiativeSections sections={initiative.sections} />
           </Container>
         </Section>
+      )}
+
+      {linkedProgram && (
+        <>
+          <Section theme="light" padding="lg">
+            <Container className="flex flex-col gap-4">
+              <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                What&apos;s Included
+              </p>
+              <h2 className="font-display text-display-lg text-ink-900">Modules</h2>
+            </Container>
+            <Container className="mt-10">
+              {/* accent, not resolveAccentToken(linkedProgram.accent_token)
+                  — the program row still carries the old shared
+                  international-licensing red from before Services split
+                  each pathway into its own colour; this page is themed by
+                  the *service*'s accent, already computed above. */}
+              <ModuleList modules={linkedProgram.modules} accent={accent} />
+            </Container>
+          </Section>
+
+          {linkedProgram.audiences.length > 0 && (
+            <Section theme="white" padding="md">
+              <Container className="flex flex-col gap-4">
+                <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                  Who This Is For
+                </p>
+                <h2 className="font-display text-display-md text-ink-900">Is this pathway right for you?</h2>
+              </Container>
+              <Container className="mt-8">
+                <AudienceGrid audiences={linkedProgram.audiences} />
+              </Container>
+            </Section>
+          )}
+
+          {linkedProgram.journeySteps.length > 0 && (
+            <Section theme="light" padding="lg">
+              <Container className="flex flex-col gap-4">
+                <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                  Your Journey
+                </p>
+                <h2 className="font-display text-display-md text-ink-900">From preparation to registration.</h2>
+              </Container>
+              <Container className="mt-10">
+                <JourneyPath steps={linkedProgram.journeySteps} />
+              </Container>
+            </Section>
+          )}
+        </>
       )}
 
       {supportService && (

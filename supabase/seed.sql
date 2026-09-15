@@ -1023,21 +1023,40 @@ where p.slug = 'master-card';
 
 -- ── Mentors ───────────────────────────────────────────────────────────────
 
+-- Full mentor team roster as supplied by the client (supabase/migrations/
+-- 20260920100000_mentor_team_roster.sql). Dr. Nadir Akhtar is the Founder
+-- & Research Lead, Dr. Saqib Muhammad is the Organizer — this reverses
+-- what the site showed earlier in the project. Not seeded here: a live,
+-- admin-entered test mentor row (real but ad-hoc, not part of the actual
+-- team roster) that exists only in the live database, not in this
+-- from-scratch seed.
 insert into mentors (slug, full_name, role_title, qualification, institution, bio, publications_count, is_leadership, is_published, sort_order, photo_url) values
-  ('dr-saqib-muhammad', 'Dr. Saqib Muhammad', 'Founder & Chief Mentor', 'MBBS, Kabir Medical College Peshawar', 'Gandhara University', 'Founder and Chief Mentor of ApexMed International, with 30+ PubMed-indexed publications guiding doctors and medical students through research and publication mentorship.', 30, true, true, 1, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-saqib-muhammad.jpg'),
-  ('dr-nadir-akhtar', 'Dr. Nadir Akhtar', 'Co-Founder & Research Lead', 'BS Zoology, Quaid-i-Azam University Islamabad', 'KIT Baden-Württemberg', 'Co-Founder and Research Lead at ApexMed International, currently an M.Phil student at KIT Baden-Württemberg, with 20+ international publications.', 20, true, true, 2, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-nadir-akhtar.png'),
-  ('dr-saajid-ahmed', 'Dr. Saajid Ahmed', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting doctors and students through study design and manuscript development.', 0, false, true, 3, null),
-  -- photo_url on these 6: demo/placeholder portraits (randomuser.me — free,
-  -- no-copyright placeholder photos, not real photos of these real-named
-  -- mentors), added per explicit confirmation after flagging that trade-off.
-  -- Replace with each mentor's real photo as it becomes available; see
-  -- supabase/migrations/20260916100000_mentor_demo_photos.sql.
-  ('dr-shanza-gul', 'Dr. Shanza Gul', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, focused on literature review and data analysis mentorship.', 0, false, true, 4, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-shanza-gul.jpg'),
-  ('dr-faiza-kiran', 'Dr. Faiza Kiran', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting manuscript writing and submission guidance.', 0, false, true, 5, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-faiza-kiran.jpg'),
-  ('dr-haris-khan', 'Dr. Haris Khan', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, specializing in systematic review and meta-analysis support.', 0, false, true, 6, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-haris-khan.jpg'),
+  ('dr-nadir-akhtar', 'Dr. Nadir Akhtar', 'Founder & Research Lead', 'MSc Biology', 'Karlsruhe Institute of Technology (KIT), Baden-Württemberg, Germany', 'Founder and Research Lead of ApexMed International, an M.Phil student at Karlsruhe Institute of Technology (KIT), Baden-Württemberg, Germany, with 20+ international research publications. Expertise in meta-analysis, systematic reviews, research methodology, scientific writing, data analysis, research project development, and publication strategy.', 20, true, true, 1, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-nadir-akhtar.png'),
+  ('dr-saqib-muhammad', 'Dr. Saqib Muhammad', 'Organizer', 'MBBS, Kabir Medical College Peshawar', 'Gandhara University', 'Organizer at ApexMed International — a researcher and medical educator with 30+ international, PubMed-indexed publications. Expertise in original research, meta-analysis, scientific writing, publication guidance, and research methodology. Also mentors ApexMed''s AI in Healthcare programme.', 30, true, true, 2, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-saqib-muhammad.jpg'),
+  ('dr-saajid-ahmed', 'Dr. Saajid Ahmed', 'Research Mentor', null, 'Quaid-i-Azam University, Islamabad', 'Research mentor at ApexMed International. Expertise in research mentorship, scientific writing, research methodology, and academic guidance. Academic and research background associated with Quaid-i-Azam University, Islamabad.', 0, false, true, 10, null),
+  -- photo_url on these 4: demo/placeholder portraits (randomuser.me —
+  -- free, no-copyright placeholder photos, not real photos of these
+  -- real-named mentors), added per explicit confirmation after flagging
+  -- that trade-off. Replace with each mentor's real photo as it becomes
+  -- available; see supabase/migrations/20260916100000_mentor_demo_photos.sql.
+  ('dr-shanza-gul', 'Dr. Shanza Gul', 'Medical Research Mentor', 'MBBS', null, 'Medical research mentor at ApexMed International, supporting mentees with research methodology, scientific writing, academic guidance, and research project support.', 0, false, true, 4, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-shanza-gul.jpg'),
+  ('dr-faiza-kiran', 'Dr. Faiza Kiran', 'Medical Research Mentor', 'MBBS', null, 'Medical research mentor at ApexMed International, supporting mentees with research methodology, scientific writing, academic guidance, and research project support.', 0, false, true, 5, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-faiza-kiran.jpg'),
+  ('dr-haris-khan', 'Dr. Haris Khan', 'Germany Medical Pathway Mentor', 'Medical Doctor', 'Baden-Württemberg, Germany', 'Germany Medical Pathway mentor at ApexMed International, with training and medical pathway experience in Baden-Württemberg, Germany, and B2-level German language proficiency. Focus areas: the German medical pathway, medical German, FSP pathway guidance, Germany career guidance, and IMG guidance.', 0, false, true, 6, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-haris-khan.jpg'),
   ('dr-muratza', 'Dr. Muratza', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through the full research training track.', 0, false, true, 7, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-muratza.jpg'),
-  ('dr-alia', 'Dr. Alia', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through research training and publication guidance.', 0, false, true, 8, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-alia.jpg'),
-  ('dr-waheed-alam', 'Dr. Waheed Alam', 'Research Mentor', 'MBBS', null, 'Research mentor at ApexMed International, supporting mentees through data analysis and manuscript preparation.', 0, false, true, 9, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-waheed-alam.jpg');
+  ('dr-alia', 'Dr. Alia', 'Psychiatry Mentor', 'MBBS, FCPS Psychiatry', null, 'Psychiatry mentor at ApexMed International''s Mental Health Support programme. Focus areas: psychiatry, mental health, clinical guidance, and psychological/mental health education.', 0, false, true, 8, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-alia.jpg'),
+  ('dr-waheed-alam', 'Dr. Waheed Alam', 'Psychiatry Mentor', 'MBBS, FCPS Psychiatry', null, 'Psychiatry mentor at ApexMed International''s Mental Health Support programme. Focus areas: psychiatry, mental health, clinical guidance, and psychological/mental health education.', 0, false, true, 9, 'https://qorpimkeqevgokygftfa.supabase.co/storage/v1/object/public/media/mentor-photos/dr-waheed-alam.jpg'),
+  ('dr-javeria-gul', 'Dr. Javeria Gul', 'CDC Specialist', null, 'Khyber Medical College, Peshawar', 'CDC Specialist at ApexMed International, with 40+ international publications.', 40, false, true, 11, null),
+  ('dr-waseem-khan', 'Dr. Waseem Khan', 'Meta-Analysis Specialist', null, null, 'Meta-Analysis Specialist at ApexMed International, with 30+ international publications.', 30, false, true, 12, null),
+  ('dr-salman-ahmed', 'Dr. Salman Ahmed', 'Germany Medical Career Mentor', 'Medical Doctor', null, 'Germany Medical Career mentor at ApexMed International, a medical doctor practicing in Germany. Focus areas: the German medical career, hospital environment, medical practice in Germany, Germany pathway guidance, and career orientation for international doctors.', 0, false, true, 13, null),
+  ('dr-talha-khan', 'Dr. Talha Khan', 'German Language Teacher', 'B2 Certified', 'Whitecliffe University of Applied Sciences', 'German Language Teacher at ApexMed International, B2 certified, and a Master''s student at Whitecliffe University of Applied Sciences.', 0, false, true, 14, null),
+  ('dr-saira-geelani', 'Dr. Saira Geelani', 'MRCP/PLAB Mentor', 'MRCS', null, 'MRCP/PLAB mentor at ApexMed International.', 0, false, true, 15, null),
+  ('dr-aleena-durrani', 'Dr. Aleena Durrani', 'MRCP/PLAB Mentor', 'MBBS, MRCP', null, 'MRCP/PLAB mentor at ApexMed International.', 0, false, true, 16, null),
+  ('dr-sundas-khan', 'Dr. Sundas Khan', 'MRCP/PLAB Mentor', 'MBBS, PLAB 2 Qualified', null, 'MRCP/PLAB mentor at ApexMed International.', 0, false, true, 17, null),
+  ('dr-shehzad', 'Dr. Shehzad', 'USMLE Mentor', 'USMLE Step 3 Qualified, ECFMG Certified', null, 'USMLE mentor at ApexMed International, a Pediatrics physician.', 0, false, true, 18, null),
+  ('dr-bilal-nazer', 'Dr. Bilal Nazer', 'USMLE Mentor', 'USMLE Step 3 Qualified, ECFMG Certified', null, 'USMLE mentor at ApexMed International, an Internal Medicine physician.', 0, false, true, 19, null),
+  ('dr-naila-jadoon', 'Dr. Naila Jadoon', 'USMLE Mentor', 'ECFMG Certified', null, 'USMLE mentor at ApexMed International, an Internal Medicine physician.', 0, false, true, 20, null),
+  ('dr-aleem-khan', 'Dr. Aleem Khan', 'AI in Healthcare Mentor', null, null, 'AI in Healthcare mentor at ApexMed International.', 0, false, true, 21, null),
+  ('dr-bacha-khan', 'Dr. Bacha Khan', 'Green Earth Project Mentor', 'PhD in Environmental Sciences', null, 'Green Earth Project mentor at ApexMed International, with a PhD in Environmental Sciences.', 0, false, true, 22, null);
 
 -- ── Site settings ─────────────────────────────────────────────────────────
 

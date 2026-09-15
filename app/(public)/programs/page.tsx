@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { resolveAccentToken } from "@/lib/accent";
+import { resolveCardHref } from "@/lib/program-service-map";
 import { absoluteUrl } from "@/lib/site-url";
 
 // Programs are admin-curated, not real-time — same ISR window as every
@@ -66,7 +67,7 @@ export default async function ProgramsIndexPage() {
                     </CardContent>
                     <CardFooter>
                       <Link
-                        href={`/programs/${program.slug}`}
+                        href={resolveCardHref(program.slug)}
                         className="text-body-sm font-medium text-[var(--accent-text)] hover:underline"
                       >
                         View program →

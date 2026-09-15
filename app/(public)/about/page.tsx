@@ -49,11 +49,11 @@ export default function AboutPage() {
               A research journey that started in first-year medical school.
             </h2>
             <p className="text-body-md text-ink-900">
-              ApexMed International was founded by Dr. Saqib Muhammad, MBBS from Kabir Medical College Peshawar,
-              affiliated with Gandhara University. His research journey began during the first year of medical
-              school and developed into a strong academic and research career, including publications in national
-              and international PubMed-indexed journals, meta-analyses, and original research using CDC-based
-              datasets.
+              ApexMed International was founded by Dr. Nadir Akhtar, Founder &amp; Research Lead, currently an
+              M.Phil student at Karlsruhe Institute of Technology (KIT), Baden-Württemberg, Germany, with 20+
+              international research publications. Dr. Saqib Muhammad, MBBS from Kabir Medical College Peshawar,
+              serves as Organizer, with 30+ international, PubMed-indexed publications spanning original research,
+              meta-analyses, and CDC-based datasets.
             </p>
             <p className="text-body-md text-ink-900">
               ApexMed was created to make practical research education, publication guidance, mentorship, and

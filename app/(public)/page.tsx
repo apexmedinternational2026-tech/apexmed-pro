@@ -25,22 +25,26 @@ export const metadata: Metadata = {
     "Research training, publication mentorship, German language and medical licensing pathway guidance, and German Master's admissions support for doctors and medical students.",
 };
 
-const FOUNDER_SLUG = "dr-saqib-muhammad";
+// Both leadership figures — Founder & Research Lead, Organizer — shown on
+// the homepage now (previously just one), in this order.
+const LEADER_SLUGS = ["dr-nadir-akhtar", "dr-saqib-muhammad"];
 
 export default async function HomePage() {
-  const [services, programs, mentors, testimonials, webinars, founder] = await Promise.all([
+  const [services, programs, mentors, testimonials, webinars, leaderResults] = await Promise.all([
     getPublishedServices(),
     getPublishedPrograms(),
     getPublishedMentors(),
     getApprovedTestimonials(),
     getUpcomingPublishedWebinars(),
-    getMentorBySlug(FOUNDER_SLUG).catch(() => null),
+    Promise.all(LEADER_SLUGS.map((slug) => getMentorBySlug(slug).catch(() => null))),
   ]);
+  const leaders = leaderResults.filter((leader) => leader !== null);
 
   // The brief's trust strip is specifically "publications by our founder",
-  // not a sum across every mentor — founder?.publications_count already
-  // reflects that mentor's own row (30, per supabase/seed.sql).
-  const founderPublicationCount = founder?.publications_count ?? 0;
+  // not a sum across every mentor — leaders[0]?.publications_count already
+  // reflects the Founder's own row (20, per supabase/seed.sql), not a sum
+  // across both leaders.
+  const founderPublicationCount = leaders[0]?.publications_count ?? 0;
   const nextWebinar = webinars[0] ?? null;
 
   return (
@@ -49,7 +53,7 @@ export default async function HomePage() {
       <TrustStrip mentorCount={mentors.length} publicationCount={founderPublicationCount} programCount={programs.length} />
       <ServicesGrid services={services} />
       <ProgramGrid programs={programs} />
-      {founder && <FounderSection founder={founder} />}
+      {leaders.length > 0 && <FounderSection leaders={leaders} />}
       <HowItWorks />
       {testimonials.length > 0 && <TestimonialsSection testimonials={testimonials} />}
       {nextWebinar && <UpcomingWebinar webinar={nextWebinar} />}

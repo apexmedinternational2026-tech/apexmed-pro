@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { resolveAccentToken } from "@/lib/accent";
+import { resolveCardHref } from "@/lib/program-service-map";
 import type { ProgramSummary } from "@/lib/supabase/queries/programs";
 
 export function ProgramGrid({ programs }: { programs: ProgramSummary[] }) {
@@ -17,6 +18,7 @@ export function ProgramGrid({ programs }: { programs: ProgramSummary[] }) {
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {programs.map((program) => {
             const accent = resolveAccentToken(program.accent_token);
+            const href = resolveCardHref(program.slug);
             return (
               <Card key={program.id} accent={accent} className="flex flex-col">
                 <CardHeader>
@@ -30,10 +32,7 @@ export function ProgramGrid({ programs }: { programs: ProgramSummary[] }) {
                   {/* --accent-text, not --accent: this is body-sized link
                       text, and the vivid --accent hue fails AA for blue
                       specifically (see lib/accent.ts). */}
-                  <Link
-                    href={`/programs/${program.slug}`}
-                    className="text-body-sm font-medium text-[var(--accent-text)] hover:underline"
-                  >
+                  <Link href={href} className="text-body-sm font-medium text-[var(--accent-text)] hover:underline">
                     View program →
                   </Link>
                 </CardFooter>
