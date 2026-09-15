@@ -60,10 +60,6 @@ export async function updateProgramAction(formData: FormData, slug: string): Pro
     duration_label: formData.get("duration_label"),
     disclaimer_key: formData.get("disclaimer_key"),
     is_published: formData.get("is_published") === "on",
-    seo_title: formData.get("seo_title"),
-    seo_description: formData.get("seo_description"),
-    seo_og_image_url: formData.get("seo_og_image_url"),
-    canonical_path: formData.get("canonical_path"),
   });
 
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid program data." };

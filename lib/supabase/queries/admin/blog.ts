@@ -73,10 +73,13 @@ function toInsert(input: BlogPostInput): Omit<TablesInsert<"blog_posts">, "id"> 
     status: input.status,
     published_at:
       input.status === "published" && !input.published_at ? new Date().toISOString() : input.published_at || null,
-    seo_title: input.seo_title || null,
-    seo_description: input.seo_description || null,
-    seo_og_image_url: input.seo_og_image_url || null,
-    canonical_path: input.canonical_path || null,
+    // seo_title/seo_description/seo_og_image_url/canonical_path are
+    // deliberately not set here — the admin form no longer collects them
+    // (they added confusing, easy-to-get-wrong manual-override fields for
+    // metadata the site already generates sensibly from title/excerpt/slug).
+    // Omitting the keys entirely, rather than setting them to null, means
+    // this update() call never touches those columns — a post that already
+    // has a manually-set SEO override (from before this change) keeps it.
   };
 }
 

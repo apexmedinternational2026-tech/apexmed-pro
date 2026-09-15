@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SeoCharCount } from "@/components/admin/seo-char-count";
 import { WordCountIndicator } from "@/components/admin/word-count-indicator";
 import { getStudyFieldWordCount } from "@/lib/content-length";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -25,8 +24,6 @@ export function StudyFieldForm({
   const isEdit = Boolean(field);
   const [categoryId, setCategoryId] = React.useState(field?.category_id ?? categories[0]?.id ?? "");
   const [isPublished, setIsPublished] = React.useState(field?.is_published ?? false);
-  const [seoTitle, setSeoTitle] = React.useState(field?.seo_title ?? "");
-  const [seoDescription, setSeoDescription] = React.useState(field?.seo_description ?? "");
   const [error, setError] = React.useState<string | null>(null);
   const [isPending, setIsPending] = React.useState(false);
 
@@ -158,35 +155,6 @@ export function StudyFieldForm({
           Published
         </Label>
       </div>
-
-      <fieldset className="flex flex-col gap-4 rounded-xl border border-navy-800/10 p-4">
-        <legend className="px-1 text-body-sm font-semibold text-ink-900">SEO</legend>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_title">SEO title</Label>
-          <Input
-            id="seo_title"
-            name="seo_title"
-            value={seoTitle}
-            onChange={(event) => setSeoTitle(event.target.value)}
-          />
-          <SeoCharCount value={seoTitle} min={50} max={60} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_description">SEO description</Label>
-          <Textarea
-            id="seo_description"
-            name="seo_description"
-            rows={2}
-            value={seoDescription}
-            onChange={(event) => setSeoDescription(event.target.value)}
-          />
-          <SeoCharCount value={seoDescription} min={140} max={160} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="canonical_path">Canonical path</Label>
-          <Input id="canonical_path" name="canonical_path" defaultValue={field?.canonical_path ?? ""} />
-        </div>
-      </fieldset>
 
       {error && <p className="text-body-sm text-error">{error}</p>}
 

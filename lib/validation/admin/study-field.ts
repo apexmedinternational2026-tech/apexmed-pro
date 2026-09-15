@@ -24,10 +24,6 @@ export const studyFieldSchema = z.object({
   language_requirements: z.string().trim().max(1000).optional().or(z.literal("")),
   career_outlook: z.string().trim().max(2000).optional().or(z.literal("")),
   is_published: z.boolean(),
-  seo_title: z.string().trim().max(70).optional().or(z.literal("")),
-  seo_description: z.string().trim().max(200).optional().or(z.literal("")),
-  seo_og_image_url: z.string().trim().url().optional().or(z.literal("")),
-  canonical_path: z.string().trim().max(200).optional().or(z.literal("")),
 });
 
 export type StudyFieldCategoryInput = z.infer<typeof studyFieldCategorySchema>;

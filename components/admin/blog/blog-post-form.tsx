@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SeoCharCount } from "@/components/admin/seo-char-count";
 import { MdxEditor } from "./mdx-editor";
 import { CoverImageUpload } from "./cover-image-upload";
 import type { AdminBlogPostDetail } from "@/lib/supabase/queries/admin/blog";
@@ -43,8 +42,6 @@ export function BlogPostForm({ post, categories, tags, authors }: BlogPostFormPr
   const [categoryId, setCategoryId] = React.useState(post?.category_id ?? "");
   const [authorId, setAuthorId] = React.useState(post?.author_id ?? "");
   const [selectedTagIds, setSelectedTagIds] = React.useState<string[]>(post?.tagIds ?? []);
-  const [seoTitle, setSeoTitle] = React.useState(post?.seo_title ?? "");
-  const [seoDescription, setSeoDescription] = React.useState(post?.seo_description ?? "");
   const [formError, setFormError] = React.useState<string | null>(null);
   const [isPending, setIsPending] = React.useState(false);
 
@@ -193,43 +190,6 @@ export function BlogPostForm({ post, categories, tags, authors }: BlogPostFormPr
           </div>
         )}
       </div>
-
-      <fieldset className="flex flex-col gap-4 rounded-xl border border-navy-800/10 p-4">
-        <legend className="px-1 text-body-sm font-semibold text-ink-900">SEO</legend>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_title">SEO title</Label>
-          <Input
-            id="seo_title"
-            name="seo_title"
-            value={seoTitle}
-            onChange={(event) => setSeoTitle(event.target.value)}
-          />
-          <SeoCharCount value={seoTitle} min={50} max={60} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_description">SEO description</Label>
-          <Textarea
-            id="seo_description"
-            name="seo_description"
-            rows={2}
-            value={seoDescription}
-            onChange={(event) => setSeoDescription(event.target.value)}
-          />
-          <SeoCharCount value={seoDescription} min={140} max={160} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_og_image_url">OG image URL (overrides the cover image for social sharing)</Label>
-          <Input id="seo_og_image_url" name="seo_og_image_url" defaultValue={post?.seo_og_image_url ?? ""} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="canonical_path">Canonical path</Label>
-          <Input id="canonical_path" name="canonical_path" defaultValue={post?.canonical_path ?? ""} />
-        </div>
-      </fieldset>
 
       {formError && <p className="text-body-sm text-error">{formError}</p>}
 

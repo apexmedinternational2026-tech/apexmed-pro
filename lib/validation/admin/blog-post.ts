@@ -28,10 +28,6 @@ export const blogPostSchema = z
     reading_minutes: z.coerce.number().int().positive().optional(),
     status: z.enum(POST_STATUS_OPTIONS),
     published_at: z.string().trim().optional().or(z.literal("")),
-    seo_title: z.string().trim().max(70).optional().or(z.literal("")),
-    seo_description: z.string().trim().max(200).optional().or(z.literal("")),
-    seo_og_image_url: z.string().trim().url().optional().or(z.literal("")),
-    canonical_path: z.string().trim().max(200).optional().or(z.literal("")),
   })
   .refine((data) => data.status !== "scheduled" || Boolean(data.published_at), {
     // "scheduled" without a future publish time is a status with no

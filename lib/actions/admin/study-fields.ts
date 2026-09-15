@@ -54,10 +54,6 @@ function parseFieldForm(formData: FormData) {
     language_requirements: formData.get("language_requirements"),
     career_outlook: formData.get("career_outlook"),
     is_published: formData.get("is_published") === "on",
-    seo_title: formData.get("seo_title"),
-    seo_description: formData.get("seo_description"),
-    seo_og_image_url: formData.get("seo_og_image_url"),
-    canonical_path: formData.get("canonical_path"),
   });
 }
 

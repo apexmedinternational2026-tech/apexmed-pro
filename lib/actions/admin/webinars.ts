@@ -20,10 +20,6 @@ function parseWebinarForm(formData: FormData) {
     cover_image_url: formData.get("cover_image_url"),
     capacity: formData.get("capacity") || undefined,
     is_published: formData.get("is_published") === "on",
-    seo_title: formData.get("seo_title"),
-    seo_description: formData.get("seo_description"),
-    seo_og_image_url: formData.get("seo_og_image_url"),
-    canonical_path: formData.get("canonical_path"),
   });
 }
 

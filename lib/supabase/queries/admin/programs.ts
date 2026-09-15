@@ -100,10 +100,10 @@ export async function updateProgramAdmin(input: ProgramEditInput): Promise<Resul
     duration_label: input.duration_label || null,
     disclaimer_key: input.disclaimer_key,
     is_published: input.is_published,
-    seo_title: input.seo_title || null,
-    seo_description: input.seo_description || null,
-    seo_og_image_url: input.seo_og_image_url || null,
-    canonical_path: input.canonical_path || null,
+    // seo_title/seo_description/seo_og_image_url/canonical_path
+    // deliberately omitted — the admin form no longer collects them, and
+    // not sending the keys (rather than sending null) leaves any
+    // previously-set SEO override on this program untouched.
   };
 
   const { data, error } = await admin.from("programs").update(update).eq("id", input.id).select("*").single();

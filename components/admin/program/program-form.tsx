@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SeoCharCount } from "@/components/admin/seo-char-count";
 import type { Tables } from "@/lib/supabase/database.types";
 
 export interface ProgramFormProps {
@@ -21,8 +20,6 @@ export function ProgramForm({ program, disclaimers }: ProgramFormProps) {
   const router = useRouter();
   const [isPublished, setIsPublished] = React.useState(program.is_published);
   const [disclaimerKey, setDisclaimerKey] = React.useState(program.disclaimer_key);
-  const [seoTitle, setSeoTitle] = React.useState(program.seo_title ?? "");
-  const [seoDescription, setSeoDescription] = React.useState(program.seo_description ?? "");
   const [status, setStatus] = React.useState<{ type: "idle" | "saving" | "saved" | "error"; message?: string }>({
     type: "idle",
   });
@@ -96,48 +93,6 @@ export function ProgramForm({ program, disclaimers }: ProgramFormProps) {
           Published (visible on the public site)
         </Label>
       </div>
-
-      <fieldset className="flex flex-col gap-4 rounded-xl border border-navy-800/10 p-4">
-        <legend className="px-1 text-body-sm font-semibold text-ink-900">SEO</legend>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_title">SEO title</Label>
-          <Input
-            id="seo_title"
-            name="seo_title"
-            value={seoTitle}
-            onChange={(event) => setSeoTitle(event.target.value)}
-          />
-          <SeoCharCount value={seoTitle} min={50} max={60} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_description">SEO description</Label>
-          <Textarea
-            id="seo_description"
-            name="seo_description"
-            rows={2}
-            value={seoDescription}
-            onChange={(event) => setSeoDescription(event.target.value)}
-          />
-          <SeoCharCount value={seoDescription} min={140} max={160} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="seo_og_image_url">OG image URL</Label>
-          <Input id="seo_og_image_url" name="seo_og_image_url" defaultValue={program.seo_og_image_url ?? ""} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="canonical_path">Canonical path</Label>
-          <Input
-            id="canonical_path"
-            name="canonical_path"
-            defaultValue={program.canonical_path ?? ""}
-            placeholder={`/programs/${program.slug}`}
-          />
-        </div>
-      </fieldset>
 
       <div className="flex items-center gap-3">
         <Button type="submit" variant="primary" size="lg" disabled={status.type === "saving"}>

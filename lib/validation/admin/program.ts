@@ -14,10 +14,6 @@ export const programEditSchema = z.object({
   duration_label: z.string().trim().max(100).optional().or(z.literal("")),
   disclaimer_key: z.string().trim().min(1, "A disclaimer is required and cannot be cleared."),
   is_published: z.boolean(),
-  seo_title: z.string().trim().max(70).optional().or(z.literal("")),
-  seo_description: z.string().trim().max(200).optional().or(z.literal("")),
-  seo_og_image_url: z.string().trim().url("Enter a valid URL.").optional().or(z.literal("")),
-  canonical_path: z.string().trim().max(200).optional().or(z.literal("")),
 });
 
 export type ProgramEditInput = z.infer<typeof programEditSchema>;

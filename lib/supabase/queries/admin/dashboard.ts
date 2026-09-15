@@ -17,6 +17,10 @@ export interface DashboardStats {
   unreadContactMessages: number;
   pendingTestimonials: number;
   upcomingWebinars: { id: string; title: string; slug: string; starts_at: string }[];
+  newApplications7d: number;
+  newApplications30d: number;
+  applicationsByService: GroupedCount[];
+  unansweredChatbotQuestions: number;
 }
 
 function daysAgoIso(days: number): string {
@@ -44,18 +48,21 @@ function groupAndCount(labels: (string | null)[]): GroupedCount[] {
 export async function getDashboardStats(): Promise<DashboardStats> {
   const admin = createAdminClient();
 
-  const [leadsResult, contactResult, testimonialsResult, webinarsResult, programsResult] = await Promise.all([
-    admin.from("leads").select("interest_type, program_id, source_page, utm_campaign, created_at"),
-    admin.from("contact_messages").select("id", { count: "exact", head: true }).eq("is_read", false),
-    admin.from("testimonials").select("id", { count: "exact", head: true }).eq("is_approved", false),
-    admin
-      .from("webinars")
-      .select("id, title, slug, starts_at")
-      .gte("starts_at", new Date().toISOString())
-      .order("starts_at", { ascending: true })
-      .limit(5),
-    admin.from("programs").select("id, name"),
-  ]);
+  const [leadsResult, contactResult, testimonialsResult, webinarsResult, programsResult, applicationsResult, unansweredResult] =
+    await Promise.all([
+      admin.from("leads").select("interest_type, program_id, source_page, utm_campaign, created_at"),
+      admin.from("contact_messages").select("id", { count: "exact", head: true }).eq("is_read", false),
+      admin.from("testimonials").select("id", { count: "exact", head: true }).eq("is_approved", false),
+      admin
+        .from("webinars")
+        .select("id, title, slug, starts_at")
+        .gte("starts_at", new Date().toISOString())
+        .order("starts_at", { ascending: true })
+        .limit(5),
+      admin.from("programs").select("id, name"),
+      admin.from("applications").select("created_at, service:services(name)"),
+      admin.from("chatbot_unanswered_questions").select("id", { count: "exact", head: true }).eq("reviewed", false),
+    ]);
 
   if (leadsResult.error) {
     throw new DatabaseQueryError("Failed to load leads for dashboard.", {
@@ -87,8 +94,21 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       originalError: programsResult.error,
     });
   }
+  if (applicationsResult.error) {
+    throw new DatabaseQueryError("Failed to load applications for dashboard.", {
+      table: "applications",
+      originalError: applicationsResult.error,
+    });
+  }
+  if (unansweredResult.error) {
+    throw new DatabaseQueryError("Failed to count unanswered chatbot questions.", {
+      table: "chatbot_unanswered_questions",
+      originalError: unansweredResult.error,
+    });
+  }
 
   const leads = leadsResult.data;
+  const applications = applicationsResult.data;
   const programNameById = new Map(programsResult.data.map((program) => [program.id, program.name]));
 
   const since7d = daysAgoIso(7);
@@ -112,5 +132,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     unreadContactMessages: contactResult.count ?? 0,
     pendingTestimonials: testimonialsResult.count ?? 0,
     upcomingWebinars: webinarsResult.data,
+    newApplications7d: applications.filter((application) => application.created_at >= since7d).length,
+    newApplications30d: applications.filter((application) => application.created_at >= since30d).length,
+    applicationsByService: groupAndCount(applications.map((application) => application.service?.name ?? null)),
+    unansweredChatbotQuestions: unansweredResult.count ?? 0,
   };
 }

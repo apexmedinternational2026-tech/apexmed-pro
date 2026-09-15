@@ -22,10 +22,6 @@ export const webinarSchema = z.object({
   cover_image_url: z.string().trim().url().optional().or(z.literal("")),
   capacity: z.coerce.number().int().positive().optional(),
   is_published: z.boolean(),
-  seo_title: z.string().trim().max(70).optional().or(z.literal("")),
-  seo_description: z.string().trim().max(200).optional().or(z.literal("")),
-  seo_og_image_url: z.string().trim().url().optional().or(z.literal("")),
-  canonical_path: z.string().trim().max(200).optional().or(z.literal("")),
 });
 
 export type WebinarInput = z.infer<typeof webinarSchema>;

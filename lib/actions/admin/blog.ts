@@ -27,10 +27,6 @@ function parsePostForm(formData: FormData) {
     reading_minutes: formData.get("reading_minutes") || undefined,
     status: formData.get("status"),
     published_at: formData.get("published_at"),
-    seo_title: formData.get("seo_title"),
-    seo_description: formData.get("seo_description"),
-    seo_og_image_url: formData.get("seo_og_image_url"),
-    canonical_path: formData.get("canonical_path"),
   });
 }
 

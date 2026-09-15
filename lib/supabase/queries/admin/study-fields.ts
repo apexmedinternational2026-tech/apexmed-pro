@@ -71,10 +71,9 @@ function toInsert(input: StudyFieldInput): Omit<TablesInsert<"study_fields">, "i
     language_requirements: input.language_requirements || null,
     career_outlook: input.career_outlook || null,
     is_published: input.is_published,
-    seo_title: input.seo_title || null,
-    seo_description: input.seo_description || null,
-    seo_og_image_url: input.seo_og_image_url || null,
-    canonical_path: input.canonical_path || null,
+    // seo_title/seo_description/seo_og_image_url/canonical_path
+    // deliberately omitted — see the identical comment in
+    // lib/supabase/queries/admin/blog.ts's toInsert().
   };
 }
 
