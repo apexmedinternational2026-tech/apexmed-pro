@@ -125,8 +125,8 @@ export function ChatWidget({ starterQuestions }: { starterQuestions: StarterFaq[
           // a fixed vh-based height did on mobile. max-h just keeps it from
           // getting unnecessarily tall on a big screen.
           className={cn(
-            "fixed inset-x-4 top-20 bottom-[352px] z-40 mx-auto flex max-h-[440px] w-auto max-w-[340px] flex-col overflow-hidden rounded-2xl border border-navy-800/10 bg-white shadow-xl shadow-black/20",
-            "sm:inset-x-auto sm:left-auto sm:right-5 sm:top-24 sm:bottom-[324px] sm:w-[340px]",
+            "fixed inset-x-4 top-16 bottom-[288px] z-40 mx-auto flex max-h-[560px] w-auto max-w-[380px] flex-col overflow-hidden rounded-2xl border border-navy-800/10 bg-white shadow-xl shadow-black/20",
+            "sm:inset-x-auto sm:left-auto sm:right-5 sm:top-20 sm:bottom-[248px] sm:w-[380px]",
           )}
         >
           <div className="flex items-center justify-between bg-navy-950 px-4 py-2.5">
@@ -208,10 +208,11 @@ export function ChatWidget({ starterQuestions }: { starterQuestions: StarterFaq[
         onClick={() => setOpen((previous) => !previous)}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
-        // Top of a 4-button corner stack: WhatsApp, Instagram, LinkedIn,
+        // Top of a 3-button corner stack: WhatsApp, LinkedIn
+        // (components/layout/whatsapp-button.tsx, linkedin-button.tsx),
         // then this — see those components' own position comments for the
         // shared spacing math (16px gap on mobile, 20px on sm:+).
-        className="fixed bottom-[288px] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:bottom-[248px] sm:right-5 sm:h-14 sm:w-14"
+        className="fixed bottom-[224px] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-gold-500 text-navy-950 shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:bottom-[172px] sm:right-5 sm:h-14 sm:w-14"
       >
         {open ? <CloseIcon className="h-5 w-5 sm:h-6 sm:w-6" /> : <MessageCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" />}
       </button>
