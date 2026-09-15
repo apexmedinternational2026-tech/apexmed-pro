@@ -158,19 +158,22 @@ function ServicesMegaMenu({ pathname }: { pathname: string }) {
       {open && (
         // Same button-to-menu gap-as-padding fix as NavDropdown (see its
         // comment) — a margin here would reopen the exact "hover opens it,
-        // moving down closes it" bug.
-        <div className="absolute left-1/2 top-full w-[640px] -translate-x-1/2 pt-2">
+        // moving down closes it" bug. Single vertical column (not the
+        // earlier 3-column mega-menu) — narrower, left-anchored like every
+        // other nav dropdown, groups stacked one under another instead of
+        // side by side.
+        <div className="absolute left-0 top-full w-80 pt-2">
           <div
             role="menu"
             aria-label="Services"
-            className="grid grid-cols-3 gap-6 rounded-lg border border-navy-800/40 bg-navy-950 p-6 shadow-xl"
+            className="flex max-h-[75vh] flex-col gap-5 overflow-y-auto rounded-lg border border-navy-800/40 bg-navy-950 p-4 shadow-xl"
           >
             {SERVICES_MEGA_MENU.map((group) => (
               <div key={group.heading}>
                 <p className="text-caption font-semibold uppercase tracking-wide text-paper-50/50">
                   {group.heading}
                 </p>
-                <div className="mt-3 flex flex-col gap-1">
+                <div className="mt-2 flex flex-col gap-1">
                   {group.items.map((service) => {
                     const href = `/services/${service.slug}`;
                     return (

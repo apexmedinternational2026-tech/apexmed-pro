@@ -52,13 +52,19 @@ insert into programs (family_id, slug, name, headline, summary, duration_label, 
     'A focused pathway for conducting original research using the CDC WONDER public health database, from query design to publication.',
     '4 months', 'navy-gold', 'publication', true, 3
   ),
+  -- sort_order on these 4 starts at 4, not 1 — the Membership Cards grid
+  -- orders by sort_order globally, and each family used to keep its own
+  -- independent 1..N counter, which interleaved Research and German Dream
+  -- Cards instead of grouping them. Starting German Dream's count where
+  -- Research's leaves off (see supabase/migrations/20260922100000) puts
+  -- every Research Card first, per explicit request.
   (
     (select id from program_families where slug = 'german-dream'),
     'blue-card',
     'Blue Card',
     'German A1 to B1 Plus Research Training.',
     'A combined language and research pathway taking you from German A1 through B1 while building your first research project.',
-    '8 months', 'sky-blue', 'germany_licensing', true, 1
+    '8 months', 'sky-blue', 'germany_licensing', true, 4
   ),
   (
     (select id from program_families where slug = 'german-dream'),
@@ -66,7 +72,7 @@ insert into programs (family_id, slug, name, headline, summary, duration_label, 
     'Green Card',
     'German A1 to B2, Your Pathway to Germany, and Publication.',
     'A comprehensive track combining German language training up to B2, structured guidance on the Germany relocation pathway, and a publication-focused research component.',
-    '10 months', 'deep-green', 'germany_licensing', true, 2
+    '10 months', 'deep-green', 'germany_licensing', true, 5
   ),
   (
     (select id from program_families where slug = 'german-dream'),
@@ -74,7 +80,7 @@ insert into programs (family_id, slug, name, headline, summary, duration_label, 
     'Gold Card',
     'German A1 to B2, Medical German, FSP, KP, and Approbation Support.',
     'The most comprehensive Card: full German language progression, Fachsprachprüfung (FSP) and Kenntnisprüfung (KP) preparation, Approbation pathway guidance, and research training.',
-    '12 months', 'amber-black', 'germany_licensing', true, 3
+    '12 months', 'amber-black', 'germany_licensing', true, 6
   ),
   (
     (select id from program_families where slug = 'german-dream'),
@@ -82,7 +88,7 @@ insert into programs (family_id, slug, name, headline, summary, duration_label, 
     'Master Card',
     'German A1 to B1, Research Training, and Master''s Admission Support.',
     'A dedicated pathway for medical students and graduates pursuing a German Master''s degree, combining language training, research experience, and admissions guidance.',
-    '9 months', 'violet', 'admissions', true, 4
+    '9 months', 'violet', 'admissions', true, 7
   );
 
 -- International Licensing pathways: reuse the existing programs/[slug]
