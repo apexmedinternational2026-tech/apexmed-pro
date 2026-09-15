@@ -1565,6 +1565,75 @@ export type Database = {
           },
         ];
       };
+      chatbot_faqs: {
+        Row: {
+          id: string;
+          question: string;
+          answer: string;
+          keywords: string | null;
+          category: string | null;
+          is_starter: boolean;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          question: string;
+          answer: string;
+          keywords?: string | null;
+          category?: string | null;
+          is_starter?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          question?: string;
+          answer?: string;
+          keywords?: string | null;
+          category?: string | null;
+          is_starter?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      chatbot_unanswered_questions: {
+        Row: {
+          id: string;
+          question_text: string;
+          session_id: string | null;
+          best_score: number | null;
+          reviewed: boolean;
+          admin_notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          question_text: string;
+          session_id?: string | null;
+          best_score?: number | null;
+          reviewed?: boolean;
+          admin_notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          question_text?: string;
+          session_id?: string | null;
+          best_score?: number | null;
+          reviewed?: boolean;
+          admin_notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     // `{ [_ in never]: never }` (an empty object type), not
     // `Record<string, never>` (an index signature) — postgrest-js
