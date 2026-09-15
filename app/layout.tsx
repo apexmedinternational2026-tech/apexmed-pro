@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Sora, Inter } from "next/font/google";
 import { OrganizationJsonLd } from "@/components/layout/organization-jsonld";
@@ -39,6 +39,32 @@ export const metadata: Metadata = {
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,
   },
+  // Explicit rather than relying only on Next's app/icon.png|apple-icon.png
+  // file-convention auto-detection — this also surfaces the 16/32px PNGs
+  // (public/, not app/, so they aren't auto-picked-up) that some browser
+  // UIs and crawlers still look for by exact size. All five files are
+  // generated from app/icon.png, the already-transparent, already-square
+  // "A" stethoscope monogram (see components/home/founder-section.tsx-era
+  // logo work) — a simplified mark, not the full wordmark logo, which is
+  // what a favicon needs to stay legible at 16px.
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
+  },
+  manifest: "/site.webmanifest",
+};
+
+export const viewport: Viewport = {
+  // Matches --color-navy-950 (app/globals.css) — the same brand navy
+  // app/apple-icon.png and the manifest's icons are composited onto, so a
+  // mobile browser's own chrome (address bar, task switcher) reads as one
+  // continuous surface with the site rather than a mismatched color.
+  themeColor: "#0a1a3c",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
