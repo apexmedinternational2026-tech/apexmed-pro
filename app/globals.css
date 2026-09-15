@@ -53,6 +53,23 @@
   --color-product-master: #6d28d9; /* Master Card — safe as background (white text) or text-on-light (6.8:1) */
   --color-product-licensing: #b91c1c; /* International Licensing — safe as background (white text, 6.47:1) or text-on-light (6.18:1); fails badly on navy-950 (2.65:1), so unlike research/gold it never pairs as foreground-on-navy */
 
+  /* Services hub accents (client's revised Services architecture). The
+     brief's own table asks every one of these to hit AA against BOTH
+     navy-950 and paper-50 simultaneously — not achievable for a single
+     mid-tone hue (the whole reason "blue"/"green"/"master"/"licensing"
+     above only ever work in ONE of those two roles, documented at length
+     in lib/accent.ts). Each color below is instead verified AA-safe in
+     whichever ONE role its own lightness actually supports, matching that
+     same established two-archetype split — not a smaller ask than the
+     brief's, just the physically achievable version of it. */
+  --color-product-research-service: #d4af37; /* Research Services — foreground-on-navy-950 (8.15:1), same archetype as --color-product-research; fails as text-on-light (2.01:1) same as that token does. Deliberately distinct from --color-product-research (#f59e0b) — the Research *Card* and the Research *Service* page are different presentation contexts post-split (see Q1). */
+  --color-product-usmle: #1d4ed8; /* USMLE Pathway service — safe as background (white text, 6.70:1) or text-on-light (6.41:1) */
+  --color-product-amc: #c2410c; /* AMC Pathway service — safe as background (white text, 5.18:1) or text-on-light (4.95:1) */
+  --color-product-mrcp: #4338ca; /* MRCP Pathway service (10th service, added per Q2 — no color given by the brief) — safe as background (white text, 7.90:1) or text-on-light (7.55:1); chosen to be visually distinct from every other service hue in use */
+  --color-product-mental-health: #0e7490; /* Mental Health Support service — safe as background (white text, 5.36:1) or text-on-light (5.12:1) */
+  --color-product-ai-healthcare: #7c3aed; /* AI for Medical Healthcare service — safe as background (white text, 5.70:1) or text-on-light (5.45:1) */
+  --color-product-green-earth: #15803d; /* Climate & Green Earth service — safe as background (white text, 5.02:1) or text-on-light (4.79:1); deliberately distinct from --color-product-green (#0b5d3b) even though both are green, same reasoning as the research-service split above */
+
   /* ── Semantic (non-brand) ──
      Form validation needs a red that isn't part of any product family.
      6.3:1 on paper-50 — kept separate from the accent system on purpose. */

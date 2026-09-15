@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { ChevronDownIcon } from "@/components/ui/icons";
-import type { NavItem } from "@/lib/navigation";
+import { ServiceIcon } from "@/components/ui/service-icon";
+import { SERVICES_MEGA_MENU, type NavItem } from "@/lib/navigation";
 
 export interface NavbarClientProps {
   items: NavItem[];
@@ -52,25 +53,20 @@ export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarCl
             this breakpoint the hamburger menu (MobileNav) carries all of
             this instead, which is exactly what it's for. */}
         <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
-          {items.map((item) =>
+          {/* PRIMARY_NAV is [Home, About, Programs, Resources] — Services
+              isn't in it (it needs the richer mega-menu below, not a plain
+              link or the simple NavDropdown), so it's spliced in here at
+              its fixed position (after About, before Programs) rather than
+              folded into that array's generic shape. */}
+          {items.slice(0, 2).map((item) => (
+            <PlainNavLink key={item.label} item={item} pathname={pathname} />
+          ))}
+          <ServicesMegaMenu pathname={pathname} />
+          {items.slice(2).map((item) =>
             item.items ? (
               <NavDropdown key={item.label} item={item} pathname={pathname} />
             ) : (
-              <Link
-                key={item.label}
-                href={item.href}
-                // Home's href is "/" — every path starts with it, so it
-                // needs an exact match rather than the startsWith below.
-                aria-current={item.href === "/" ? (pathname === "/" ? "page" : undefined) : pathname.startsWith(item.href) ? "page" : undefined}
-                className={cn(
-                  "whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium transition-colors",
-                  (item.href === "/" ? pathname === "/" : pathname.startsWith(item.href))
-                    ? "text-gold-400"
-                    : "text-paper-50/90 hover:text-paper-50",
-                )}
-              >
-                {item.label}
-              </Link>
+              <PlainNavLink key={item.label} item={item} pathname={pathname} />
             ),
           )}
         </nav>
@@ -82,6 +78,138 @@ export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarCl
         <div className="xl:hidden">{mobileNav}</div>
       </div>
     </header>
+  );
+}
+
+function PlainNavLink({ item, pathname }: { item: NavItem; pathname: string }) {
+  // Home's href is "/" — every path starts with it, so it needs an exact
+  // match rather than the startsWith used for every other plain link.
+  const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+
+  return (
+    <Link
+      href={item.href}
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        "whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium transition-colors",
+        isActive ? "text-gold-400" : "text-paper-50/90 hover:text-paper-50",
+      )}
+    >
+      {item.label}
+    </Link>
+  );
+}
+
+function ServicesMegaMenu({ pathname }: { pathname: string }) {
+  const [open, setOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+
+  const isActive = pathname.startsWith("/services");
+
+  function close() {
+    setOpen(false);
+  }
+
+  // Same interaction contract as NavDropdown below (hover AND keyboard
+  // focus open it, Escape closes it and returns focus to the trigger,
+  // blur-out-of-the-group closes it, never a click-toggle) — see that
+  // component's own comments for why each piece is shaped this way.
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") {
+      close();
+      triggerRef.current?.focus();
+    }
+  }
+
+  function handleBlur(event: React.FocusEvent<HTMLDivElement>) {
+    if (!containerRef.current?.contains(event.relatedTarget as Node | null)) {
+      close();
+    }
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onFocus={() => setOpen(true)}
+        onClick={() => setOpen(true)}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium transition-colors",
+          isActive ? "text-gold-400" : "text-paper-50/90 hover:text-paper-50",
+        )}
+      >
+        Services
+        <ChevronDownIcon
+          aria-hidden="true"
+          className={cn("h-3.5 w-3.5 transition-transform duration-150", open && "rotate-180")}
+        />
+      </button>
+
+      {open && (
+        // Same button-to-menu gap-as-padding fix as NavDropdown (see its
+        // comment) — a margin here would reopen the exact "hover opens it,
+        // moving down closes it" bug.
+        <div className="absolute left-1/2 top-full w-[640px] -translate-x-1/2 pt-2">
+          <div
+            role="menu"
+            aria-label="Services"
+            className="grid grid-cols-3 gap-6 rounded-lg border border-navy-800/40 bg-navy-950 p-6 shadow-xl"
+          >
+            {SERVICES_MEGA_MENU.map((group) => (
+              <div key={group.heading}>
+                <p className="text-caption font-semibold uppercase tracking-wide text-paper-50/50">
+                  {group.heading}
+                </p>
+                <div className="mt-3 flex flex-col gap-1">
+                  {group.items.map((service) => {
+                    const href = `/services/${service.slug}`;
+                    return (
+                      <Link
+                        key={service.slug}
+                        href={href}
+                        role="menuitem"
+                        aria-current={pathname === href ? "page" : undefined}
+                        className={cn(
+                          "flex items-start gap-2.5 rounded-md px-2 py-2 transition-colors hover:bg-navy-900",
+                          pathname === href ? "text-gold-400" : "text-paper-50/85 hover:text-paper-50",
+                        )}
+                      >
+                        <ServiceIcon iconKey={service.iconKey} aria-hidden="true" className="mt-0.5 h-4 w-4 flex-none" />
+                        <span>
+                          <span className="block text-body-sm font-medium">{service.name}</span>
+                          <span className="block text-caption text-paper-50/50">{service.summary}</span>
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="-mt-px rounded-b-lg border border-t-0 border-navy-800/40 bg-navy-900 px-6 py-3">
+            <Link
+              href="/services"
+              role="menuitem"
+              className="text-body-sm font-medium text-gold-400 hover:text-gold-300"
+            >
+              View all services →
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

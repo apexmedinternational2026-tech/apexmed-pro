@@ -41,7 +41,20 @@
 // navy-950 for light-background contexts instead. The vivid hue is still
 // exactly right for borders, icons, and `foreground`-on-`surface`, where
 // it's the one actually verified as brand-safe.
-export type AccentToken = "research" | "blue" | "green" | "gold" | "master" | "licensing";
+export type AccentToken =
+  | "research"
+  | "blue"
+  | "green"
+  | "gold"
+  | "master"
+  | "licensing"
+  | "research-service"
+  | "usmle"
+  | "mrcp"
+  | "amc"
+  | "mental-health"
+  | "ai-healthcare"
+  | "green-earth";
 
 export interface AccentRoles {
   accent: string;
@@ -92,6 +105,51 @@ export const ACCENT_TOKENS: Record<AccentToken, AccentRoles> = {
     foreground: "var(--color-paper-50)",
     text: "var(--color-product-licensing)",
   },
+  // Services hub accents (see app/globals.css's own note on why these
+  // aren't dual-context-verified the way the brief asked — same
+  // research/gold vs. blue/green/master/licensing archetype split below).
+  "research-service": {
+    accent: "var(--color-product-research-service)",
+    surface: "var(--color-navy-950)",
+    foreground: "var(--color-product-research-service)",
+    text: "var(--color-navy-950)",
+  },
+  usmle: {
+    accent: "var(--color-product-usmle)",
+    surface: "var(--color-product-usmle)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-usmle)",
+  },
+  mrcp: {
+    accent: "var(--color-product-mrcp)",
+    surface: "var(--color-product-mrcp)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-mrcp)",
+  },
+  amc: {
+    accent: "var(--color-product-amc)",
+    surface: "var(--color-product-amc)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-amc)",
+  },
+  "mental-health": {
+    accent: "var(--color-product-mental-health)",
+    surface: "var(--color-product-mental-health)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-mental-health)",
+  },
+  "ai-healthcare": {
+    accent: "var(--color-product-ai-healthcare)",
+    surface: "var(--color-product-ai-healthcare)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-ai-healthcare)",
+  },
+  "green-earth": {
+    accent: "var(--color-product-green-earth)",
+    surface: "var(--color-product-green-earth)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-green-earth)",
+  },
 };
 
 export const ACCENT_LABELS: Record<AccentToken, string> = {
@@ -101,6 +159,13 @@ export const ACCENT_LABELS: Record<AccentToken, string> = {
   gold: "Gold Card",
   master: "Master Card",
   licensing: "International Licensing & Exams",
+  "research-service": "Research Services",
+  usmle: "USMLE Pathway",
+  mrcp: "MRCP Pathway",
+  amc: "AMC Pathway",
+  "mental-health": "Mental Health Support",
+  "ai-healthcare": "AI for Medical Healthcare",
+  "green-earth": "Climate & Green Earth",
 };
 
 // programs.accent_token in the database is free-text seeded copy
@@ -118,6 +183,11 @@ const ACCENT_TOKEN_TEXT_MAP: Record<string, AccentToken> = {
 
 export function resolveAccentToken(rawAccentToken: string | null | undefined): AccentToken {
   if (!rawAccentToken) return "research";
+  // services.accent_token (unlike programs.accent_token) is seeded with the
+  // AccentToken key itself ("research-service", "usmle", ...) rather than a
+  // separate descriptive string needing translation — checked first so a
+  // direct hit never has to round-trip through ACCENT_TOKEN_TEXT_MAP.
+  if (rawAccentToken in ACCENT_TOKENS) return rawAccentToken as AccentToken;
   const match = ACCENT_TOKEN_TEXT_MAP[rawAccentToken];
   return match ?? "research";
 }

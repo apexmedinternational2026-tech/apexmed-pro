@@ -1343,6 +1343,166 @@ export type Database = {
         };
         Relationships: [];
       };
+      services: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          short_name: string | null;
+          tagline: string | null;
+          summary: string | null;
+          description: string | null;
+          icon_key: string;
+          accent_token: string;
+          hero_image_url: string | null;
+          disclaimer_key: string | null;
+          is_published: boolean;
+          sort_order: number;
+          meta_title: string | null;
+          meta_description: string | null;
+          og_image_url: string | null;
+          canonical_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          short_name?: string | null;
+          tagline?: string | null;
+          summary?: string | null;
+          description?: string | null;
+          icon_key: string;
+          accent_token: string;
+          hero_image_url?: string | null;
+          disclaimer_key?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          canonical_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          name?: string;
+          short_name?: string | null;
+          tagline?: string | null;
+          summary?: string | null;
+          description?: string | null;
+          icon_key?: string;
+          accent_token?: string;
+          hero_image_url?: string | null;
+          disclaimer_key?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          canonical_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "services_disclaimer_key_fkey";
+            columns: ["disclaimer_key"];
+            isOneToOne: false;
+            referencedRelation: "compliance_disclaimers";
+            referencedColumns: ["key"];
+          },
+        ];
+      };
+      service_items: {
+        Row: {
+          id: string;
+          service_id: string;
+          slug: string;
+          name: string;
+          summary: string | null;
+          icon_key: string | null;
+          program_id: string | null;
+          course_id: string | null;
+          study_field_category_id: string | null;
+          external_href: string | null;
+          is_published: boolean;
+          sort_order: number;
+          meta_title: string | null;
+          meta_description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          service_id: string;
+          slug: string;
+          name: string;
+          summary?: string | null;
+          icon_key?: string | null;
+          program_id?: string | null;
+          course_id?: string | null;
+          study_field_category_id?: string | null;
+          external_href?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          service_id?: string;
+          slug?: string;
+          name?: string;
+          summary?: string | null;
+          icon_key?: string | null;
+          program_id?: string | null;
+          course_id?: string | null;
+          study_field_category_id?: string | null;
+          external_href?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_items_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_items_program_id_fkey";
+            columns: ["program_id"];
+            isOneToOne: false;
+            referencedRelation: "programs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_items_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "courses";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_items_study_field_category_id_fkey";
+            columns: ["study_field_category_id"];
+            isOneToOne: false;
+            referencedRelation: "study_field_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     // `{ [_ in never]: never }` (an empty object type), not
     // `Record<string, never>` (an index signature) — postgrest-js
