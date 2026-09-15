@@ -51,6 +51,17 @@ export const PRIMARY_NAV: NavItem[] = [
     ],
   },
   {
+    label: "International Exams",
+    href: "/international-exams",
+    items: [
+      { label: "All Pathways", href: "/international-exams" },
+      { label: "USMLE (USA)", href: "/international-exams/usmle" },
+      { label: "PLAB (UK)", href: "/international-exams/plab" },
+      { label: "MRCP (UK)", href: "/international-exams/mrcp" },
+      { label: "AMC (Australia)", href: "/international-exams/amc" },
+    ],
+  },
+  {
     label: "Master's",
     href: "/masters",
     items: [
@@ -60,8 +71,11 @@ export const PRIMARY_NAV: NavItem[] = [
       { label: "German Dream Master Card", href: "/programs/master-card" },
     ],
   },
+  // Renamed from "Resources" to "More" per the new-sections build brief's
+  // nav restructure — Courses/Green Earth/Mental Health Support join this
+  // dropdown once their own pages exist (PARTs 3–5, not yet built).
   {
-    label: "Resources",
+    label: "More",
     href: "/blog",
     items: [
       { label: "Blog", href: "/blog" },

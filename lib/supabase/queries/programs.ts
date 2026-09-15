@@ -56,7 +56,19 @@ export async function getProgramFamilies(): Promise<ProgramFamily[]> {
   return data;
 }
 
-export async function getPublishedPrograms(): Promise<ProgramSummary[]> {
+// International Licensing (USMLE/PLAB/MRCP/AMC) gets its own hub and
+// pathway pages under /international-exams with a purpose-built layout —
+// it does not belong in the generic "Seven Cards" grid this function feeds
+// (components/home/program-grid.tsx, app/(public)/programs/page.tsx),
+// whose copy and design assume exactly the original two families. Excluded
+// by default rather than requiring every caller to remember to filter it
+// out; a caller that genuinely wants every published program regardless of
+// family can pass an empty array.
+const DEFAULT_EXCLUDED_FAMILY_SLUGS = ["international-licensing"];
+
+export async function getPublishedPrograms(
+  excludeFamilySlugs: string[] = DEFAULT_EXCLUDED_FAMILY_SLUGS,
+): Promise<ProgramSummary[]> {
   const supabase = createPublicClient();
 
   // No .eq("is_published", true) here: the anon_select_published_programs
@@ -64,7 +76,9 @@ export async function getPublishedPrograms(): Promise<ProgramSummary[]> {
   // forgotten or bypassed by a caller who forgets to add it.
   const { data, error } = await supabase
     .from("programs")
-    .select("id, slug, name, headline, summary, duration_label, hero_image_url, accent_token, sort_order, family_id")
+    .select(
+      "id, slug, name, headline, summary, duration_label, hero_image_url, accent_token, sort_order, family_id, family:program_families(slug)",
+    )
     .order("sort_order", { ascending: true });
 
   if (error) {
@@ -74,7 +88,34 @@ export async function getPublishedPrograms(): Promise<ProgramSummary[]> {
     });
   }
 
-  return data;
+  return data
+    .filter((row) => !excludeFamilySlugs.includes(row.family?.slug ?? ""))
+    .map(({ family: _family, ...program }) => program);
+}
+
+// Powers /international-exams (its own hub + [slug] pages) — scoped to one
+// family, unlike getPublishedPrograms() which deliberately excludes this
+// same family from the generic "Seven Cards" grid. Two different pages
+// wanting opposite halves of the same split, not a contradiction.
+export async function getPublishedProgramsByFamilySlug(familySlug: string): Promise<ProgramSummary[]> {
+  const supabase = createPublicClient();
+
+  const { data, error } = await supabase
+    .from("programs")
+    .select(
+      "id, slug, name, headline, summary, duration_label, hero_image_url, accent_token, sort_order, family_id, family:program_families!inner(slug)",
+    )
+    .eq("family.slug", familySlug)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    throw new DatabaseQueryError(`Failed to load published programs for family "${familySlug}".`, {
+      table: "programs",
+      originalError: error,
+    });
+  }
+
+  return data.map(({ family: _family, ...program }) => program);
 }
 
 export async function getProgramSlugs(): Promise<{ slug: string }[]> {

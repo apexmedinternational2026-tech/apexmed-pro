@@ -22,6 +22,10 @@ export const INTEREST_TYPE_OPTIONS = [
   "green_card",
   "gold_card",
   "master_card",
+  "international_exams",
+  "ai_course",
+  "green_earth",
+  "counselling",
   "general_inquiry",
 ] as const;
 

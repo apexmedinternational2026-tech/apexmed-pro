@@ -23,6 +23,10 @@ export const INTEREST_TYPE_LABELS: Record<string, string> = {
   green_card: "Green Card",
   gold_card: "Gold Card",
   master_card: "Master Card",
+  international_exams: "International Licensing & Exams",
+  ai_course: "AI for Healthcare Practitioners",
+  green_earth: "Green Earth Initiative",
+  counselling: "Mental Health Support",
   general_inquiry: "General Inquiry",
 };
 

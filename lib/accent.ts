@@ -41,7 +41,7 @@
 // navy-950 for light-background contexts instead. The vivid hue is still
 // exactly right for borders, icons, and `foreground`-on-`surface`, where
 // it's the one actually verified as brand-safe.
-export type AccentToken = "research" | "blue" | "green" | "gold" | "master";
+export type AccentToken = "research" | "blue" | "green" | "gold" | "master" | "licensing";
 
 export interface AccentRoles {
   accent: string;
@@ -81,6 +81,17 @@ export const ACCENT_TOKENS: Record<AccentToken, AccentRoles> = {
     foreground: "var(--color-paper-50)",
     text: "var(--color-product-master)",
   },
+  // Same shape as green/master: the raw hue is AA-safe both as a solid
+  // background (white text, 6.47:1) and as text-on-light (6.18:1) — see
+  // app/globals.css's own contrast note. It fails badly against navy-950
+  // (2.65:1), so this never becomes a research/gold-style navy-surface
+  // accent.
+  licensing: {
+    accent: "var(--color-product-licensing)",
+    surface: "var(--color-product-licensing)",
+    foreground: "var(--color-paper-50)",
+    text: "var(--color-product-licensing)",
+  },
 };
 
 export const ACCENT_LABELS: Record<AccentToken, string> = {
@@ -89,6 +100,7 @@ export const ACCENT_LABELS: Record<AccentToken, string> = {
   green: "Green Card",
   gold: "Gold Card",
   master: "Master Card",
+  licensing: "International Licensing & Exams",
 };
 
 // programs.accent_token in the database is free-text seeded copy
@@ -101,6 +113,7 @@ const ACCENT_TOKEN_TEXT_MAP: Record<string, AccentToken> = {
   "deep-green": "green",
   "amber-black": "gold",
   violet: "master",
+  "deep-red": "licensing",
 };
 
 export function resolveAccentToken(rawAccentToken: string | null | undefined): AccentToken {

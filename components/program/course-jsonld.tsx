@@ -4,15 +4,18 @@ export interface CourseJsonLdProps {
   name: string;
   description: string;
   slug: string;
+  /** Overrides the default `/programs/${slug}` URL — for a program reachable
+   * at a different canonical path (e.g. /international-exams/usmle). */
+  path?: string;
 }
 
-export function CourseJsonLd({ name, description, slug }: CourseJsonLdProps) {
+export function CourseJsonLd({ name, description, slug, path }: CourseJsonLdProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
     name,
     description,
-    url: absoluteUrl(`/programs/${slug}`),
+    url: absoluteUrl(path ?? `/programs/${slug}`),
     provider: {
       "@type": "Organization",
       name: "ApexMed International",

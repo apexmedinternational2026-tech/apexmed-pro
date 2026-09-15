@@ -51,6 +51,7 @@
   --color-product-gold: #e0a80d; /* Gold Card — 9.2:1 on its paired near-black surface */
   --color-product-gold-bg: #0b0b0b; /* Gold Card's near-black surface */
   --color-product-master: #6d28d9; /* Master Card — safe as background (white text) or text-on-light (6.8:1) */
+  --color-product-licensing: #b91c1c; /* International Licensing — safe as background (white text, 6.47:1) or text-on-light (6.18:1); fails badly on navy-950 (2.65:1), so unlike research/gold it never pairs as foreground-on-navy */
 
   /* ── Semantic (non-brand) ──
      Form validation needs a red that isn't part of any product family.

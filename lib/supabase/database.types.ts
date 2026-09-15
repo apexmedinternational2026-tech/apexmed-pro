@@ -11,7 +11,9 @@
 // file was authored/verified in. Instead, every table's exact columns,
 // types, and nullability were queried directly from
 // information_schema.columns against the real, live project
-// (qorpimkeqevgokygftfa) on 2026-09-13 and diffed against this file
+// (qorpimkeqevgokygftfa) on 2026-09-13 (and again on 2026-09-17, for the
+// nine tables 20260917100000_new_sections_schema.sql added — same method,
+// same constraint) and diffed against this file
 // field-by-field — this is not a guess transcribed from the migration
 // files, it's confirmed against the database those migrations actually
 // produced.
@@ -925,6 +927,419 @@ export type Database = {
           message?: string;
           is_read?: boolean;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      courses: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          tagline: string | null;
+          description: string | null;
+          hero_image_url: string | null;
+          format_label: string | null;
+          certification_label: string | null;
+          disclaimer_key: string;
+          is_published: boolean;
+          sort_order: number;
+          meta_title: string | null;
+          meta_description: string | null;
+          og_image_url: string | null;
+          canonical_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          title: string;
+          tagline?: string | null;
+          description?: string | null;
+          hero_image_url?: string | null;
+          format_label?: string | null;
+          certification_label?: string | null;
+          disclaimer_key: string;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          canonical_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          title?: string;
+          tagline?: string | null;
+          description?: string | null;
+          hero_image_url?: string | null;
+          format_label?: string | null;
+          certification_label?: string | null;
+          disclaimer_key?: string;
+          is_published?: boolean;
+          sort_order?: number;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          canonical_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "courses_disclaimer_key_fkey";
+            columns: ["disclaimer_key"];
+            isOneToOne: false;
+            referencedRelation: "compliance_disclaimers";
+            referencedColumns: ["key"];
+          },
+        ];
+      };
+      course_modules: {
+        Row: {
+          id: string;
+          course_id: string;
+          module_number: number;
+          title: string;
+          key_takeaway: string | null;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          course_id: string;
+          module_number: number;
+          title: string;
+          key_takeaway?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          course_id?: string;
+          module_number?: number;
+          title?: string;
+          key_takeaway?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "courses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      course_lessons: {
+        Row: {
+          id: string;
+          module_id: string;
+          lesson_number: string | null;
+          title: string;
+          topics: string[];
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          module_id: string;
+          lesson_number?: string | null;
+          title: string;
+          topics?: string[];
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          module_id?: string;
+          lesson_number?: string | null;
+          title?: string;
+          topics?: string[];
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "course_lessons_module_id_fkey";
+            columns: ["module_id"];
+            isOneToOne: false;
+            referencedRelation: "course_modules";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      initiatives: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          mission: string | null;
+          vision: string | null;
+          tagline: string | null;
+          description: string | null;
+          hero_image_url: string | null;
+          accent_token: string | null;
+          is_published: boolean;
+          meta_title: string | null;
+          meta_description: string | null;
+          og_image_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          mission?: string | null;
+          vision?: string | null;
+          tagline?: string | null;
+          description?: string | null;
+          hero_image_url?: string | null;
+          accent_token?: string | null;
+          is_published?: boolean;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          name?: string;
+          mission?: string | null;
+          vision?: string | null;
+          tagline?: string | null;
+          description?: string | null;
+          hero_image_url?: string | null;
+          accent_token?: string | null;
+          is_published?: boolean;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          og_image_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      initiative_sections: {
+        Row: {
+          id: string;
+          initiative_id: string;
+          title: string;
+          description: string | null;
+          icon_key: string | null;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          initiative_id: string;
+          title: string;
+          description?: string | null;
+          icon_key?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          initiative_id?: string;
+          title?: string;
+          description?: string | null;
+          icon_key?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "initiative_sections_initiative_id_fkey";
+            columns: ["initiative_id"];
+            isOneToOne: false;
+            referencedRelation: "initiatives";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      initiative_section_items: {
+        Row: {
+          id: string;
+          section_id: string;
+          label: string;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          section_id: string;
+          label: string;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          section_id?: string;
+          label?: string;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "initiative_section_items_section_id_fkey";
+            columns: ["section_id"];
+            isOneToOne: false;
+            referencedRelation: "initiative_sections";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      support_services: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          summary: string | null;
+          description: string | null;
+          disclaimer_key: string;
+          is_published: boolean;
+          meta_title: string | null;
+          meta_description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          summary?: string | null;
+          description?: string | null;
+          disclaimer_key: string;
+          is_published?: boolean;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          name?: string;
+          summary?: string | null;
+          description?: string | null;
+          disclaimer_key?: string;
+          is_published?: boolean;
+          meta_title?: string | null;
+          meta_description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "support_services_disclaimer_key_fkey";
+            columns: ["disclaimer_key"];
+            isOneToOne: false;
+            referencedRelation: "compliance_disclaimers";
+            referencedColumns: ["key"];
+          },
+        ];
+      };
+      support_service_offerings: {
+        Row: {
+          id: string;
+          service_id: string;
+          title: string;
+          description: string | null;
+          is_free: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          service_id: string;
+          title: string;
+          description?: string | null;
+          is_free?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          service_id?: string;
+          title?: string;
+          description?: string | null;
+          is_free?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "support_service_offerings_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "support_services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      crisis_resources: {
+        Row: {
+          id: string;
+          country: string;
+          organisation: string;
+          phone: string;
+          hours: string | null;
+          notes: string | null;
+          verified_on: string;
+          is_active: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          country: string;
+          organisation: string;
+          phone: string;
+          hours?: string | null;
+          notes?: string | null;
+          verified_on: string;
+          is_active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          country?: string;
+          organisation?: string;
+          phone?: string;
+          hours?: string | null;
+          notes?: string | null;
+          verified_on?: string;
+          is_active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };

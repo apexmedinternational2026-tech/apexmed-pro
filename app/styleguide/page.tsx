@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ACCENTS: AccentToken[] = ["research", "blue", "green", "gold", "master"];
+const ACCENTS: AccentToken[] = ["research", "blue", "green", "gold", "master", "licensing"];
 
 const CONTRAST_CHECKS: { label: string; fg: ColorToken; bg: ColorToken; context: string }[] = [
   {
