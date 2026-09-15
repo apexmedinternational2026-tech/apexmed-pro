@@ -26,10 +26,10 @@ export async function LinkedInButton() {
       target="_blank"
       rel="noreferrer"
       aria-label="Follow ApexMed International on LinkedIn"
-      // Sits directly between the WhatsApp button (bottom-24/sm:bottom-5)
-      // and the chat toggle (bottom-56/sm:bottom-44) — one button-height
-      // plus the same 16px/20px gap above WhatsApp's own position.
-      className="fixed bottom-40 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#0A66C2] text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A66C2] sm:bottom-24 sm:right-5 sm:h-14 sm:w-14"
+      // Third of a 4-button corner stack — WhatsApp, then Instagram
+      // (components/layout/instagram-button.tsx), then this, then the chat
+      // toggle on top. Same 16px/20px gap math throughout.
+      className="fixed bottom-[224px] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#0A66C2] text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A66C2] sm:bottom-[172px] sm:right-5 sm:h-14 sm:w-14"
     >
       <LinkedInIcon className="h-5 w-5 sm:h-6 sm:w-6" />
     </a>

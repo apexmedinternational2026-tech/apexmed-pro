@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
+import { InstagramButton } from "@/components/layout/instagram-button";
 import { LinkedInButton } from "@/components/layout/linkedin-button";
 import { ChatWidgetLoader } from "@/components/chatbot/chat-widget-loader";
 
@@ -26,6 +27,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <main id="main-content">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <InstagramButton />
       <LinkedInButton />
       <ChatWidgetLoader />
     </>

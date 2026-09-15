@@ -39,7 +39,7 @@ export async function WhatsAppButton() {
       // (640px+), where that overlap stopped happening in testing.
       className="fixed bottom-24 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] sm:bottom-5 sm:right-5 sm:h-14 sm:w-14"
     >
-      <WhatsAppIcon className="h-6 w-6 sm:h-7 sm:w-7" />
+      <WhatsAppIcon className="h-5 w-5 sm:h-6 sm:w-6" />
     </a>
   );
 }
