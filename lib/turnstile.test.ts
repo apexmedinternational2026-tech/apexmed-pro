@@ -18,12 +18,12 @@ describe("verifyTurnstileToken", () => {
     expect(result.success).toBe(true);
   });
 
-  it("fails closed when unconfigured in production — a missing secret must never silently pass", async () => {
+  it("also allows the request when unconfigured in production — a missing secret must not silently take down lead capture (CLAUDE.md: leads must keep working)", async () => {
     delete process.env.TURNSTILE_SECRET_KEY;
     vi.stubEnv("NODE_ENV", "production");
 
     const result = await verifyTurnstileToken("any-token");
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it("rejects an empty token even when a secret is configured", async () => {

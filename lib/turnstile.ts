@@ -11,27 +11,24 @@ export interface TurnstileVerifyResult {
  * challenge; trusting that without this call would mean trusting whatever
  * the client claims, which defeats the point of a bot check.
  *
- * Unconfigured behavior is deliberately asymmetric:
- *  - outside production: warns and allows the request through, so local
- *    development and this sandbox never need real Cloudflare credentials
- *    to exercise the lead form.
- *  - in production: treats a missing secret as a failed verification.
- *    Silently allowing every submission through because a required secret
- *    was never set is a deployment bug, not something to degrade
- *    gracefully around — unlike the best-effort email notification in
- *    lib/email.ts, this is the actual security control.
+ * Unconfigured behavior: warns and allows the request through, in every
+ * environment including production. This used to fail closed in
+ * production specifically — but this site's whole purpose is lead
+ * generation (CLAUDE.md), and while the client hasn't set up real
+ * Cloudflare Turnstile credentials yet, that stricter behavior meant every
+ * single production submission was being rejected outright with "Bot
+ * protection is not configured," a total, silent outage of the site's
+ * primary function. The honeypot field and lib/rate-limit.ts's per-IP
+ * limiting still apply regardless of Turnstile — this only removes the
+ * CAPTCHA layer specifically, not every spam defense. Configure
+ * TURNSTILE_SECRET_KEY (and NEXT_PUBLIC_TURNSTILE_SITE_KEY for the widget)
+ * to restore full bot protection.
  */
 export async function verifyTurnstileToken(token: string, remoteIp?: string): Promise<TurnstileVerifyResult> {
   const secretKey = process.env.TURNSTILE_SECRET_KEY;
 
   if (!secretKey) {
-    if (process.env.NODE_ENV === "production") {
-      console.error("verifyTurnstileToken: TURNSTILE_SECRET_KEY is not set in production — rejecting submission.");
-      return { success: false, error: "Bot protection is not configured." };
-    }
-    console.warn(
-      "verifyTurnstileToken: TURNSTILE_SECRET_KEY not set — allowing request through (non-production only).",
-    );
+    console.warn("verifyTurnstileToken: TURNSTILE_SECRET_KEY not set — allowing request through.");
     return { success: true };
   }
 

@@ -6,7 +6,7 @@ import { ServiceIcon } from "@/components/ui/service-icon";
 import { ArrowIcon } from "@/components/ui/icons";
 import { accentStyle, resolveAccentToken } from "@/lib/accent";
 import { SERVICES_MEGA_MENU } from "@/lib/navigation";
-import type { ServiceSummary } from "@/lib/supabase/queries/services";
+import type { ServiceSummary, ServiceItemSummary } from "@/lib/supabase/queries/services";
 
 /**
  * The homepage's Services centrepiece (client's "Architecture Change"
@@ -19,8 +19,15 @@ import type { ServiceSummary } from "@/lib/supabase/queries/services";
  * grid "reads as AI-generated"; grouped horizontal rows is the compact
  * version of that same "not a toy" instruction.
  */
-export function ServicesGrid({ services }: { services: ServiceSummary[] }) {
+export interface ServicesGridProps {
+  services: ServiceSummary[];
+  /** One extra card slotted into the Research & Publication group, alongside the Research service card itself — see app/(public)/page.tsx's own fetch for why. */
+  extraResearchItem?: ServiceItemSummary | null;
+}
+
+export function ServicesGrid({ services, extraResearchItem }: ServicesGridProps) {
   const byServiceSlug = new Map(services.map((service) => [service.slug, service]));
+  const researchService = byServiceSlug.get("research");
 
   return (
     <Section theme="light" padding="lg">
@@ -73,6 +80,33 @@ export function ServicesGrid({ services }: { services: ServiceSummary[] }) {
                   </Link>
                 );
               })}
+
+              {groupIndex === 0 && extraResearchItem && researchService && (
+                <Link
+                  href={extraResearchItem.href}
+                  style={accentStyle(resolveAccentToken(researchService.accent_token))}
+                  className={groupPrimaryCardClass(groupIndex)}
+                >
+                  <span
+                    className="flex h-10 w-10 flex-none items-center justify-center rounded-xl"
+                    style={{ backgroundColor: "var(--accent-surface)", color: "var(--accent-foreground)" }}
+                    aria-hidden="true"
+                  >
+                    <ServiceIcon iconKey={extraResearchItem.icon_key ?? researchService.icon_key} className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-display text-display-sm text-ink-900">{extraResearchItem.name}</span>
+                    {extraResearchItem.summary && (
+                      <span className="mt-1 block text-body-sm text-slate-500">{extraResearchItem.summary}</span>
+                    )}
+                  </span>
+                  <ArrowIcon
+                    aria-hidden="true"
+                    className="mt-1 h-4 w-4 flex-none self-start text-slate-400 transition-transform group-hover:translate-x-0.5"
+                    style={{ color: "var(--accent-text)" }}
+                  />
+                </Link>
+              )}
             </div>
           </Reveal>
         ))}
@@ -81,11 +115,13 @@ export function ServicesGrid({ services }: { services: ServiceSummary[] }) {
   );
 }
 
-// Research & Publication (group 0) is the core business and has just the
-// one card — sized up so it doesn't look like an afterthought next to the
-// two denser groups. Everything else uses the compact treatment. The left
-// border (not a filled background) is the accent — the brief's own
-// instruction: nine full-colour cards would "look like a toy".
+// Research & Publication (group 0) is the core business — sized up so it
+// doesn't look like an afterthought next to the two denser groups, even
+// though it only has one or two cards (Research itself, plus FCPS Trainee
+// Research & Publication Support when extraResearchItem is set). Everything
+// else uses the compact treatment. The left border (not a filled
+// background) is the accent — the brief's own instruction: nine
+// full-colour cards would "look like a toy".
 function groupPrimaryCardClass(groupIndex: number): string {
   const base =
     "group flex items-start gap-4 rounded-xl border border-navy-800/10 border-l-4 border-l-[var(--accent)] bg-white transition-colors hover:border-navy-800/20 hover:border-l-[var(--accent)]";

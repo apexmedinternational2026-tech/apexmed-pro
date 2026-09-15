@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getPublishedPrograms } from "@/lib/supabase/queries/programs";
-import { getPublishedServices } from "@/lib/supabase/queries/services";
+import { getPublishedServices, getServiceBySlug } from "@/lib/supabase/queries/services";
 import { getPublishedMentors, getMentorBySlug } from "@/lib/supabase/queries/mentors";
 import { getApprovedTestimonials } from "@/lib/supabase/queries/testimonials";
 import { getUpcomingPublishedWebinars } from "@/lib/supabase/queries/webinars";
@@ -30,15 +30,21 @@ export const metadata: Metadata = {
 const LEADER_SLUGS = ["dr-nadir-akhtar", "dr-saqib-muhammad"];
 
 export default async function HomePage() {
-  const [services, programs, mentors, testimonials, webinars, leaderResults] = await Promise.all([
+  const [services, programs, mentors, testimonials, webinars, leaderResults, researchService] = await Promise.all([
     getPublishedServices(),
     getPublishedPrograms(),
     getPublishedMentors(),
     getApprovedTestimonials(),
     getUpcomingPublishedWebinars(),
     Promise.all(LEADER_SLUGS.map((slug) => getMentorBySlug(slug).catch(() => null))),
+    // Fetched just to surface the FCPS item as its own card on the
+    // homepage grid, alongside the Research service card — everything
+    // else about ServicesGrid stays service-level (SERVICES_MEGA_MENU),
+    // this is the one deliberate exception (client's explicit ask).
+    getServiceBySlug("research").catch(() => null),
   ]);
   const leaders = leaderResults.filter((leader) => leader !== null);
+  const fcpsItem = researchService?.items.find((item) => item.slug === "fcps-research-publication") ?? null;
 
   // The brief's trust strip is specifically "publications by our founder",
   // not a sum across every mentor — leaders[0]?.publications_count already
@@ -51,7 +57,7 @@ export default async function HomePage() {
     <>
       <Hero />
       <TrustStrip mentorCount={mentors.length} publicationCount={founderPublicationCount} programCount={programs.length} />
-      <ServicesGrid services={services} />
+      <ServicesGrid services={services} extraResearchItem={fcpsItem} />
       <ProgramGrid programs={programs} />
       {leaders.length > 0 && <FounderSection leaders={leaders} />}
       <HowItWorks />
