@@ -115,6 +115,9 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
       ])
     : ([[], {}, []] as [Awaited<ReturnType<typeof getActiveCrisisResources>>, Awaited<ReturnType<typeof getSiteSettings>>, (Awaited<ReturnType<typeof getMentorBySlug>> | null)[]]);
 
+  const whatsappNumber = asString(siteSettings.contact_whatsapp_number);
+  const contactEmail = asString(siteSettings.contact_email);
+
   const accent = resolveAccentToken(service.accent_token);
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -224,9 +227,11 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
                 </p>
               </Container>
               <Container className="mt-8 flex flex-wrap gap-5">
-                {counsellingTeam.filter(Boolean).map((mentor) => (
-                  <MentorCard key={mentor!.id} mentor={mentor!} />
-                ))}
+                {counsellingTeam
+                  .filter((mentor): mentor is NonNullable<typeof mentor> => mentor !== null)
+                  .map((mentor) => (
+                    <MentorCard key={mentor.id} mentor={mentor} />
+                  ))}
               </Container>
             </Section>
           )}
@@ -242,24 +247,24 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
                 lead form, no sign-up: just a message.
               </p>
               <div className="mt-6 flex flex-col gap-2">
-                {asString(siteSettings.contact_whatsapp_number) && (
+                {whatsappNumber && (
                   <a
-                    href={`https://wa.me/${asString(siteSettings.contact_whatsapp_number)!.replace(/\D/g, "")}`}
+                    href={`https://wa.me/${whatsappNumber.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
                     className="text-body-md font-medium underline-offset-2 hover:underline"
                     style={{ color: "var(--accent-text)" }}
                   >
-                    WhatsApp: {asString(siteSettings.contact_whatsapp_number)}
+                    WhatsApp: {whatsappNumber}
                   </a>
                 )}
-                {asString(siteSettings.contact_email) && (
+                {contactEmail && (
                   <a
-                    href={`mailto:${asString(siteSettings.contact_email)}`}
+                    href={`mailto:${contactEmail}`}
                     className="text-body-md font-medium underline-offset-2 hover:underline"
                     style={{ color: "var(--accent-text)" }}
                   >
-                    Email: {asString(siteSettings.contact_email)}
+                    Email: {contactEmail}
                   </a>
                 )}
               </div>
