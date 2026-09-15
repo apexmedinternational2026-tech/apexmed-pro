@@ -11,7 +11,6 @@ import { SERVICES_MEGA_MENU, type NavItem } from "@/lib/navigation";
 export interface NavbarClientProps {
   items: NavItem[];
   logo: React.ReactNode;
-  authLink: React.ReactNode;
   cta: React.ReactNode;
   mobileNav: React.ReactNode;
 }
@@ -23,7 +22,7 @@ export interface NavbarClientProps {
  * rendered server-side in navbar.tsx and handed in as props/children, so
  * this leaf stays as small as the interactivity actually requires.
  */
-export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarClientProps) {
+export function NavbarClient({ items, logo, cta, mobileNav }: NavbarClientProps) {
   const [scrolled, setScrolled] = React.useState(false);
   const pathname = usePathname();
 
@@ -72,7 +71,6 @@ export function NavbarClient({ items, logo, authLink, cta, mobileNav }: NavbarCl
         </nav>
 
         <div className="hidden xl:flex xl:flex-none xl:items-center xl:gap-2">
-          {authLink}
           {cta}
         </div>
         <div className="xl:hidden">{mobileNav}</div>

@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getServiceBySlug, getServiceSlugs, getPublishedServices } from "@/lib/supabase/queries/services";
+import { getCourseBySlug } from "@/lib/supabase/queries/courses";
+import { getInitiativeBySlug } from "@/lib/supabase/queries/initiatives";
+import { getSupportServiceBySlug, getActiveCrisisResources } from "@/lib/supabase/queries/support-services";
+import { getSiteSettings } from "@/lib/supabase/queries/site-settings";
+import { getMentorBySlug } from "@/lib/supabase/queries/mentors";
 import { NotFoundError } from "@/lib/supabase/errors";
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
@@ -9,8 +14,25 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { ProfileAssessmentButton } from "@/components/ui/profile-assessment-button";
 import { ComplianceNote } from "@/components/program/compliance-note";
+import { CourseJsonLd } from "@/components/program/course-jsonld";
+import { CourseCurriculum } from "@/components/services/course-curriculum";
+import { InitiativeSections } from "@/components/services/initiative-sections";
+import { EmergencyBlock } from "@/components/services/emergency-block";
+import { SupportOfferings } from "@/components/services/support-offerings";
+import { MentorCard } from "@/components/mentors/mentor-card";
 import { accentStyle, resolveAccentToken } from "@/lib/accent";
 import { absoluteUrl } from "@/lib/site-url";
+import type { Json } from "@/lib/supabase/database.types";
+
+// The one service with real content but no lead-capture form anywhere on
+// its page — a "counselling enquiry" row in a leads table the whole team
+// can browse is a privacy problem (PART 5's explicit reasoning). Contact
+// is WhatsApp/email only.
+const NO_LEAD_FORM_SLUGS = ["mental-health"];
+
+function asString(value: Json | undefined): string | null {
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
 
 export const revalidate = 3600;
 
@@ -67,6 +89,32 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
   const allServices = await getPublishedServices();
   const otherServices = allServices.filter((s) => s.slug !== slug);
 
+  // PART 4 of the brief: a service with no sub-items renders its own
+  // linked content directly instead of a click-through grid (AI
+  // Healthcare's course, Green Earth's initiative, Mental Health's
+  // support service — each row's slug matches its parent service's slug
+  // by convention, see 20260919100001's own comment). .catch(() => null)
+  // rather than letting NotFoundError propagate: most services genuinely
+  // have neither items nor a linked course/initiative, and that's a
+  // normal, valid state (a hero-only page), not an error.
+  const course = service.items.length === 0 ? await getCourseBySlug(slug).catch(() => null) : null;
+  const initiative = service.items.length === 0 && !course ? await getInitiativeBySlug(slug).catch(() => null) : null;
+  const supportService =
+    service.items.length === 0 && !course && !initiative ? await getSupportServiceBySlug(slug).catch(() => null) : null;
+
+  // Mental Health only: the emergency block, WhatsApp/email contact
+  // details, and the two real, already-published psychiatrist mentors —
+  // fetched only when actually needed, not on every service page.
+  const [crisisResources, siteSettings, counsellingTeam] = supportService
+    ? await Promise.all([
+        getActiveCrisisResources(),
+        getSiteSettings(),
+        Promise.all(
+          ["dr-alia", "dr-waheed-alam"].map((mentorSlug) => getMentorBySlug(mentorSlug).catch(() => null)),
+        ),
+      ])
+    : ([[], {}, []] as [Awaited<ReturnType<typeof getActiveCrisisResources>>, Awaited<ReturnType<typeof getSiteSettings>>, (Awaited<ReturnType<typeof getMentorBySlug>> | null)[]]);
+
   const accent = resolveAccentToken(service.accent_token);
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -74,8 +122,12 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
     { label: service.name, href: `/services/${service.slug}` },
   ];
 
+  const canonicalPath = service.canonical_url ?? `/services/${service.slug}`;
+
   return (
     <div style={accentStyle(accent)}>
+      {course && <CourseJsonLd name={course.title} description={course.tagline ?? course.description ?? ""} slug={course.slug} path={canonicalPath} />}
+
       <section
         className="gold-foil-noise relative overflow-hidden pb-16 pt-32"
         style={{ backgroundColor: "var(--accent-surface)", color: "var(--accent-foreground)" }}
@@ -103,11 +155,118 @@ export default async function ServiceHubPage({ params }: { params: Promise<Servi
               {service.description}
             </p>
           )}
-          <div className="mt-1 flex flex-wrap gap-3">
-            <ProfileAssessmentButton />
-          </div>
+          {!NO_LEAD_FORM_SLUGS.includes(slug) && (
+            <div className="mt-1 flex flex-wrap gap-3">
+              <ProfileAssessmentButton />
+            </div>
+          )}
         </Container>
       </section>
+
+      {supportService && (
+        <Section theme="white" padding="md">
+          <Container className="max-w-3xl">
+            <EmergencyBlock resources={crisisResources} />
+          </Container>
+        </Section>
+      )}
+
+      {course && (
+        <Section theme="light" padding="lg">
+          <Container className="flex flex-col gap-4">
+            {(course.format_label || course.certification_label) && (
+              <div className="flex flex-wrap gap-4 text-body-sm text-slate-500">
+                {course.format_label && <span>{course.format_label}</span>}
+                {course.format_label && course.certification_label && <span aria-hidden="true">·</span>}
+                {course.certification_label && <span>{course.certification_label}</span>}
+              </div>
+            )}
+            <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+              Curriculum
+            </p>
+            <h2 className="font-display text-display-lg text-ink-900">
+              {course.modules.length} modules, taught step by step.
+            </h2>
+          </Container>
+          <Container className="mt-8 max-w-3xl">
+            <CourseCurriculum modules={course.modules} />
+          </Container>
+        </Section>
+      )}
+
+      {initiative && (
+        <Section theme="light" padding="lg">
+          <Container className="max-w-3xl">
+            <InitiativeSections sections={initiative.sections} />
+          </Container>
+        </Section>
+      )}
+
+      {supportService && (
+        <>
+          <Section theme="light" padding="lg">
+            <Container className="flex flex-col gap-4">
+              <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                Services Offered
+              </p>
+              <h2 className="font-display text-display-lg text-ink-900">How ApexMed can help</h2>
+            </Container>
+            <Container className="mt-8 max-w-3xl">
+              <SupportOfferings offerings={supportService.offerings} />
+            </Container>
+          </Section>
+
+          {counsellingTeam.some(Boolean) && (
+            <Section theme="white" padding="lg">
+              <Container className="flex flex-col gap-4">
+                <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                  Our Counselling Team
+                </p>
+              </Container>
+              <Container className="mt-8 flex flex-wrap gap-5">
+                {counsellingTeam.filter(Boolean).map((mentor) => (
+                  <MentorCard key={mentor!.id} mentor={mentor!} />
+                ))}
+              </Container>
+            </Section>
+          )}
+
+          <Section theme="light" padding="lg">
+            <Container className="max-w-2xl">
+              <p className="text-eyebrow uppercase" style={{ color: "var(--accent-text)" }}>
+                How to Access Support
+              </p>
+              <h2 className="mt-2 font-display text-display-lg text-ink-900">Contact us directly</h2>
+              <p className="mt-4 text-body-md text-slate-500">
+                Attend a free webinar, or reach out directly — a simple &ldquo;I need help&rdquo; is enough. No
+                lead form, no sign-up: just a message.
+              </p>
+              <div className="mt-6 flex flex-col gap-2">
+                {asString(siteSettings.contact_whatsapp_number) && (
+                  <a
+                    href={`https://wa.me/${asString(siteSettings.contact_whatsapp_number)!.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-body-md font-medium underline-offset-2 hover:underline"
+                    style={{ color: "var(--accent-text)" }}
+                  >
+                    WhatsApp: {asString(siteSettings.contact_whatsapp_number)}
+                  </a>
+                )}
+                {asString(siteSettings.contact_email) && (
+                  <a
+                    href={`mailto:${asString(siteSettings.contact_email)}`}
+                    className="text-body-md font-medium underline-offset-2 hover:underline"
+                    style={{ color: "var(--accent-text)" }}
+                  >
+                    Email: {asString(siteSettings.contact_email)}
+                  </a>
+                )}
+              </div>
+            </Container>
+          </Section>
+        </>
+      )}
 
       {service.items.length > 0 && (
         <Section theme="light" padding="lg">

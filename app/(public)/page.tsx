@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { getProgramFamilies, getPublishedPrograms } from "@/lib/supabase/queries/programs";
+import { getPublishedPrograms } from "@/lib/supabase/queries/programs";
+import { getPublishedServices } from "@/lib/supabase/queries/services";
 import { getPublishedMentors, getMentorBySlug } from "@/lib/supabase/queries/mentors";
 import { getApprovedTestimonials } from "@/lib/supabase/queries/testimonials";
 import { getUpcomingPublishedWebinars } from "@/lib/supabase/queries/webinars";
 import { Hero } from "@/components/home/hero";
 import { TrustStrip } from "@/components/home/trust-strip";
-import { FamilySplit } from "@/components/home/family-split";
+import { ServicesGrid } from "@/components/home/services-grid";
 import { ProgramGrid } from "@/components/home/program-grid";
 import { FounderSection } from "@/components/home/founder-section";
 import { HowItWorks } from "@/components/home/how-it-works";
@@ -27,8 +28,8 @@ export const metadata: Metadata = {
 const FOUNDER_SLUG = "dr-saqib-muhammad";
 
 export default async function HomePage() {
-  const [families, programs, mentors, testimonials, webinars, founder] = await Promise.all([
-    getProgramFamilies(),
+  const [services, programs, mentors, testimonials, webinars, founder] = await Promise.all([
+    getPublishedServices(),
     getPublishedPrograms(),
     getPublishedMentors(),
     getApprovedTestimonials(),
@@ -46,7 +47,7 @@ export default async function HomePage() {
     <>
       <Hero />
       <TrustStrip mentorCount={mentors.length} publicationCount={founderPublicationCount} programCount={programs.length} />
-      <FamilySplit families={families} />
+      <ServicesGrid services={services} />
       <ProgramGrid programs={programs} />
       {founder && <FounderSection founder={founder} />}
       <HowItWorks />

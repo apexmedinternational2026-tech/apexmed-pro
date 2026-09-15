@@ -2,8 +2,16 @@
 
 import * as React from "react";
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getStoredConsent, storeConsent, type ConsentChoice } from "@/lib/consent";
+
+// Someone visiting a mental health support page should not be profiled for
+// it — no tracking pixels, no analytics events, no session recording,
+// full stop (PART 5 of the client's brief, explicit requirement). Checked
+// as a prefix so a future sub-page under this route inherits the same
+// exclusion without needing its own entry.
+const NO_TRACKING_PATH_PREFIXES = ["/services/mental-health"];
 
 export interface AnalyticsProps {
   /** Per-request CSP nonce from middleware.ts's x-nonce header, read by the
@@ -25,6 +33,7 @@ export interface AnalyticsProps {
  */
 export function Analytics({ nonce }: AnalyticsProps) {
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const pathname = usePathname();
   const [consent, setConsent] = React.useState<ConsentChoice | null>(null);
   const [hydrated, setHydrated] = React.useState(false);
 
@@ -33,7 +42,8 @@ export function Analytics({ nonce }: AnalyticsProps) {
     setHydrated(true);
   }, []);
 
-  if (!measurementId) return null;
+  const isNoTrackingRoute = NO_TRACKING_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  if (!measurementId || isNoTrackingRoute) return null;
 
   function handleChoice(choice: ConsentChoice) {
     storeConsent(choice);

@@ -2,38 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PRIMARY_NAV, PROFILE_ASSESSMENT_HREF } from "@/lib/navigation";
-import { getVisitorSession } from "@/lib/supabase/auth";
 import { NavbarClient } from "./navbar-client";
 import { MobileNav } from "./mobile-nav";
 
 /**
  * Server Component: renders the static parts of the header (logo, CTA
- * link, and now the sign-in/account state) and hands them to NavbarClient
- * as already-rendered nodes, so only the scroll/dropdown behavior — not
- * the markup itself — lives in client JS. Assumes every public page opens
- * with a navy-themed hero (see components/ui/section.tsx), so the light
- * logo/link colors read correctly whether the header is
- * transparent-over-hero or solid-on-scroll.
+ * link) and hands them to NavbarClient as already-rendered nodes, so only
+ * the scroll/dropdown behavior — not the markup itself — lives in client
+ * JS. Assumes every public page opens with a navy-themed hero (see
+ * components/ui/section.tsx), so the light logo/link colors read
+ * correctly whether the header is transparent-over-hero or
+ * solid-on-scroll.
+ *
+ * No Sign In / My Account link — removed per explicit request. The
+ * underlying /login, /signup, /account routes and visitor-accounts
+ * backend (supabase/migrations/20260913100003_visitor_accounts.sql)
+ * still exist and still work if linked to directly; only the nav entry
+ * point is gone. Flag if the whole feature should come out instead.
  */
 export async function Navbar() {
-  const session = await getVisitorSession();
-
-  const authLink = session ? (
-    <Link
-      href="/account"
-      className="flex-none whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium text-paper-50/90 transition-colors hover:text-paper-50"
-    >
-      My Account
-    </Link>
-  ) : (
-    <Link
-      href="/login"
-      className="flex-none whitespace-nowrap rounded-md px-2 py-2 text-body-sm font-medium text-paper-50/90 transition-colors hover:text-paper-50"
-    >
-      Sign In
-    </Link>
-  );
-
   return (
     <NavbarClient
       items={PRIMARY_NAV}
@@ -73,13 +60,12 @@ export async function Navbar() {
           </span>
         </Link>
       }
-      authLink={authLink}
       cta={
         <Button asChild variant="gold" size="sm" className="flex-none">
           <Link href={PROFILE_ASSESSMENT_HREF}>Contact Us</Link>
         </Button>
       }
-      mobileNav={<MobileNav items={PRIMARY_NAV} isSignedIn={Boolean(session)} />}
+      mobileNav={<MobileNav items={PRIMARY_NAV} />}
     />
   );
 }

@@ -60,7 +60,7 @@ function renderMobileNavItems(items: NavItem[], pathname: string) {
   });
 }
 
-export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn: boolean }) {
+export function MobileNav({ items }: { items: NavItem[] }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -242,13 +242,6 @@ export function MobileNav({ items, isSignedIn }: { items: NavItem[]; isSignedIn:
 
             {renderMobileNavItems(items.slice(2), pathname)}
           </Accordion>
-
-          <Link
-            href={isSignedIn ? "/account" : "/login"}
-            className="border-b border-navy-800/40 py-4 text-body-lg font-medium text-paper-50"
-          >
-            {isSignedIn ? "My Account" : "Sign In"}
-          </Link>
 
           <ProfileAssessmentButton size="md" className="mt-6 w-full justify-center" />
         </div>

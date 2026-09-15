@@ -10,7 +10,7 @@ export function ProgramGrid({ programs }: { programs: ProgramSummary[] }) {
     <Section theme="light" padding="md">
       <Container>
         <div className="max-w-2xl">
-          <p className="text-eyebrow uppercase text-gold-500">All Programs</p>
+          <p className="text-eyebrow uppercase text-gold-500">Membership Cards</p>
           <h2 className="mt-3 font-display text-display-lg text-ink-900">Seven Cards, one clear next step.</h2>
         </div>
 
