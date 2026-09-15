@@ -25,16 +25,33 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="New leads (7 days)" value={stats.newLeads7d} />
         <StatCard label="New leads (30 days)" value={stats.newLeads30d} />
+        <StatCard label="New applications (7 days)" value={stats.newApplications7d} />
+        <StatCard label="New applications (30 days)" value={stats.newApplications30d} />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Unread contact messages" value={stats.unreadContactMessages} />
         <StatCard label="Testimonials pending review" value={stats.pendingTestimonials} />
+        <Link href="/admin/chatbot/unanswered" className="block">
+          <StatCard label="Chatbot questions needing review" value={stats.unansweredChatbotQuestions} />
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-navy-800/10 bg-white p-6">
-          <h2 className="font-display text-display-sm text-ink-900">Leads by package</h2>
-          <p className="mt-1 text-body-sm text-slate-500">Which Card is actually converting — all time.</p>
-          <div className="mt-5">
-            <GroupedCountList items={stats.leadsByProgram} emptyLabel="No leads yet." />
+        <div className="flex flex-col gap-6">
+          <div className="rounded-xl border border-navy-800/10 bg-white p-6">
+            <h2 className="font-display text-display-sm text-ink-900">Leads by package</h2>
+            <p className="mt-1 text-body-sm text-slate-500">Which Card is actually converting — all time.</p>
+            <div className="mt-5">
+              <GroupedCountList items={stats.leadsByProgram} emptyLabel="No leads yet." />
+            </div>
+          </div>
+          <div className="rounded-xl border border-navy-800/10 bg-white p-6">
+            <h2 className="font-display text-display-sm text-ink-900">Applications by service</h2>
+            <p className="mt-1 text-body-sm text-slate-500">Which service page is actually converting — all time.</p>
+            <div className="mt-5">
+              <GroupedCountList items={stats.applicationsByService} emptyLabel="No applications yet." />
+            </div>
           </div>
         </div>
 
